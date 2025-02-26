@@ -21,5 +21,7 @@ create_map(graph, nodes, "Groningen.html")
 
 house_station = route(graph, 10606779735, 2303887045)
 house_zernike = route(graph, 10606779735, 1201758528)
+nieuweschans_wilp = route(graph, 1369936545, 2832826837)
 plot_route(nodes, house_station, "house_station.html")
 plot_route(nodes, house_zernike, "house_zernike.html")
+plot_route(nodes, nieuweschans_wilp, "nieuweschans_wilp.html")
