@@ -1,8 +1,7 @@
 import folium
 
 def create_map(graph, nodes, filename):
-    groningen_lat, groningen_lon = 53.2194, 6.5665
-    m = folium.Map(location=[groningen_lat, groningen_lon], zoom_start=12)
+    m = folium.Map(location=[53.2194, 6.5665], zoom_start=12)
 
     for edge in graph.es:
         start_node = graph.vs[edge.source]["name"]
