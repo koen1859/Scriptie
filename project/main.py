@@ -17,7 +17,7 @@ graph = make_graph(roads, nodes)
 print(f"Graph has {len(graph.vs)} vertices and {len(graph.es)} edges. It contains {len(graph.components())} component(s).")
 
 print("Visualizing the road network on the map...")
-create_map(graph, nodes, "Groningen.html")
+create_map(roads, "Groningen.html")
 
 house_station = route(graph, 10606779735, 2303887045)
 house_zernike = route(graph, 10606779735, 1201758528)
