@@ -2,10 +2,10 @@ from db import get_road_data
 from nodes import get_nodes
 from graph import make_graph
 from map import create_map
-from create_tsp import create_parameter_file, create_tsp
-from project.route import plot_route, route
-from solve_tsp import solve_tsp
-from read_tour import read_tour
+from create_tsp import create_parameter_file
+from find_beta import find_beta
+from run_simulation import run_simulation
+from find_beta import find_beta, scatterplot
 
 print("Importing the roads...")
 roads = get_road_data()
@@ -25,15 +25,9 @@ create_map(roads, "Groningen.html")
 print("Making TSP parameter file...")
 create_parameter_file()
 
-print("Making a TSP...")
-distances = create_tsp(graph, 100)
+print("Simulating TSPs...")
+solutions, lengths = run_simulation(graph, nodes, 10, range(10, 100), False)
 
-print("Solving the TSP...")
-solve_tsp()
-
-print("Reading the output...")
-locations, distance = read_tour()
-
-print("Visualizing the TSP Path...")
-path = route(graph, locations)
-plot_route(nodes, locations, path, distance, "TSP.html")
+print("Finding beta and making scatter plot...")
+x, y, b_hat = find_beta(lengths)
+scatterplot(lengths, x, y, b_hat)
