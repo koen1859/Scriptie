@@ -5,5 +5,9 @@ def create_map(roads, filename):
 
     for road in roads:
         trail_coordinates = list(zip(road[2], road[3]))
-        folium.PolyLine(trail_coordinates, tooltip = str(road[0])).add_to(m)
+        folium.PolyLine(
+            trail_coordinates,
+            tooltip = str(road[0]),
+            color = "red"
+        ).add_to(m)
     m.save(filename)
