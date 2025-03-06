@@ -10,4 +10,4 @@ def create_map(roads, filename):
             tooltip = str(road[0]),
             color = "red"
         ).add_to(m)
-    m.save(filename)
+    m.save(f"maps/{filename}")

@@ -2,7 +2,10 @@ from db import get_road_data
 from nodes import get_nodes
 from graph import make_graph
 from map import create_map
-from route import route, plot_route
+from create_tsp import create_parameter_file, create_tsp
+from project.route import plot_route, route
+from solve_tsp import solve_tsp
+from read_tour import read_tour
 
 print("Importing the roads...")
 roads = get_road_data()
@@ -19,9 +22,18 @@ print(f"Graph has {len(graph.vs)} vertices and {len(graph.es)} edges. It contain
 print("Visualizing the road network on the map...")
 create_map(roads, "Groningen.html")
 
-house_station = route(graph, 10606779735, 2303887045)
-house_zernike = route(graph, 10606779735, 1201758528)
-nieuweschans_wilp = route(graph, 1369936545, 2832826837)
-plot_route(nodes, house_station, "house_station.html")
-plot_route(nodes, house_zernike, "house_zernike.html")
-plot_route(nodes, nieuweschans_wilp, "nieuweschans_wilp.html")
+print("Making TSP parameter file...")
+create_parameter_file()
+
+print("Making a TSP...")
+distances = create_tsp(graph, 100)
+
+print("Solving the TSP...")
+solve_tsp()
+
+print("Reading the output...")
+locations, distance = read_tour()
+
+print("Visualizing the TSP Path...")
+path = route(graph, locations)
+plot_route(nodes, locations, path, distance, "TSP.html")

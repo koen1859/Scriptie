@@ -15,6 +15,7 @@ def get_road_data():
             array_agg(n.id ORDER BY u.ordinality) AS node_ids,
             array_agg(n.lat / 10^7 ) AS node_lats,
             array_agg(n.lon / 10^7 ) AS node_lons,
+            w.tags->>'oneway' AS oneway
         FROM
             planet_osm_ways AS w
         JOIN

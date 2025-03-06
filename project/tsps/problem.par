@@ -1,0 +1,2 @@
+PROBLEM_FILE = tsps/problem.tsp
+OUTPUT_TOUR_FILE = tsps/tour.txt
