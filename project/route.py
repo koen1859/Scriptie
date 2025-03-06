@@ -6,7 +6,7 @@ def route(graph, start, end):
     return path
 
 def plot_route(nodes, path, filename):
-    m = folium.Map(location = nodes[path[math.ceil(len(path / 2))]])
+    m = folium.Map(location = nodes[int(path[math.ceil(len(path) / 2)])])
     path_coords = [nodes[int(index)] for index in path]
     folium.PolyLine(path_coords, color="red", weight=4.5).add_to(m)
     folium.Marker(nodes[int(path[0])], popup="House").add_to(m)
