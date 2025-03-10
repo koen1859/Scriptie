@@ -34,14 +34,14 @@ print(f"Graph has {len(graph.vs)} vertices and {len(graph.es)} edges. It contain
 
 tic.toc()
 
-print("Visualizing the road network on the map...")
-create_map(roads, "Groningen.html")
+# print("Visualizing the road network on the map...")
+# create_map(roads, "Groningen.html")
 
 print("Making TSP parameter file...")
 create_parameter_file()
 
 print("Simulating TSPs...")
-solutions, lengths = run_simulation(graph, nodes, 10, range(30, 50), False)
+solutions, lengths = run_simulation(graph, nodes, 10, range(10, 100), False)
 
 print("Finding beta and making scatter plot...")
 x, y, b_hat = find_beta(lengths)
