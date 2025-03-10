@@ -37,3 +37,21 @@ def get_road_data():
     cursor.close()
     connection.close()
     return roads
+
+def get_addresses():
+    connection = psycopg2.connect(
+        dbname=DB_NAME,
+        user=DB_USER,
+        host=DB_HOST,
+        port=DB_PORT
+    )
+    cursor = connection.cursor()
+    cursor.execute("""
+        SELECT n.id, n.lat, n.lon
+        FROM planet_osm_nodes AS n 
+        WHERE n.tags ->> 'addr:postcode' IS NOT NULL;
+    """)
+    addresses = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return addresses

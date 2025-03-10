@@ -11,21 +11,18 @@ def distance(node1, node2):
     y = lat2 - lat1
     return R * sqrt(x**2 + y**2)
 
-def make_graph(roads, nodes):
+def make_graph(nodes, edges, weights):
     graph = ig.Graph(directed = True)
-    used_ids = set()
 
-    for _, node_ids, _, _, oneway in roads:
-        for node_id in node_ids:
-            if node_id not in used_ids:
-                graph.add_vertex(name=str(node_id), coords=nodes[node_id])
-                used_ids.add(node_id)
+    node_names = list(nodes.keys())
+    coords = list(nodes.values())
+    graph.add_vertices(node_names)
+    graph.vs["coords"] = coords
 
-        for i in range(1, len(node_ids)):
-            if oneway == "yes":
-                graph.add_edge(str(node_ids[i - 1]), str(node_ids[i]), weight = distance(nodes[node_ids[i - 1]], nodes[node_ids[i]]))
-            else:
-                graph.add_edge(str(node_ids[i - 1]), str(node_ids[i]), weight = distance(nodes[node_ids[i - 1]], nodes[node_ids[i]]))
-                graph.add_edge(str(node_ids[i]), str(node_ids[i - 1]), weight = distance(nodes[node_ids[i - 1]], nodes[node_ids[i]]))
+    name_to_index = {name: idx for idx, name in enumerate(node_names)}
+    edge_indices = [(name_to_index[u], name_to_index[v]) for u, v in edges]
+
+    graph.add_edges(edge_indices)
+    graph.es["weight"] = weights
 
     return graph.subgraph(max(graph.components(), key = len))
