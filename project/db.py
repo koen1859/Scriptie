@@ -47,8 +47,8 @@ def get_addresses():
     )
     cursor = connection.cursor()
     cursor.execute("""
-        SELECT n.id, n.lat, n.lon
-        FROM planet_osm_nodes AS n 
+        SELECT n.id, n.lat / 10^7, n.lon / 10^7
+        FROM planet_osm_nodes AS n
         WHERE n.tags ->> 'addr:postcode' IS NOT NULL;
     """)
     addresses = cursor.fetchall()
