@@ -40,7 +40,7 @@ tic.tic()
 # create_map(roads, "Groningen.html")
 
 # print("Creating TSP instances...")
-# create_tsps(graph, 10, range(10, 100))
+# create_tsps(graph, 100, range(10, 90, 2))
 # tic.toc()
 # tic.tic()
 
@@ -52,9 +52,10 @@ tic.tic()
 print("Reading the output...")
 tours, distances = read_tours()
 
-print("Visualizing some routes...")
-paths_subset(graph, nodes, buildings, tours, distances)
+# print("Visualizing some routes...")
+# paths_subset(graph, nodes, buildings, tours, distances)
 
 print("Finding beta and making scatter plot...")
-x, y, b_hat = find_beta(distances)
+x, y, b_hat, b = find_beta(distances)
+tic.toc()
 scatterplot(distances, x, y, b_hat)
