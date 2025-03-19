@@ -2,6 +2,7 @@ from graph import distance
 from shapely.geometry import Point
 from shapely.strtree import STRtree
 
+
 def get_edges(roads, nodes, buildings):
     edges = []
     weights = []
@@ -21,13 +22,13 @@ def get_edges(roads, nodes, buildings):
 
     tree = STRtree(node_points)
     for building_id, building_coords in buildings.items():
-            building_point = Point(building_coords)
-            nearest_node_point = tree.nearest(building_point)
-            nearest_node_id = point_to_node_id[nearest_node_point]
+        building_point = Point(building_coords)
+        nearest_node_point = tree.nearest(building_point)
+        nearest_node_id = point_to_node_id[nearest_node_point]
 
-            edges.append((str(building_id), str(nearest_node_id)))
-            weights.append(distance(building_coords, nodes[nearest_node_id]))
-            edges.append((str(nearest_node_id), str(building_id)))
-            weights.append(distance(nodes[nearest_node_id], building_coords))
+        edges.append((str(building_id), str(nearest_node_id)))
+        weights.append(distance(building_coords, nodes[nearest_node_id]))
+        edges.append((str(nearest_node_id), str(building_id)))
+        weights.append(distance(nodes[nearest_node_id], building_coords))
 
     return edges, weights

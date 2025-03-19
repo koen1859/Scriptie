@@ -1,13 +1,12 @@
-from db import get_road_data, get_addresses
 from buildings import get_buildings
-from nodes import get_nodes
+from db import get_addresses, get_road_data
 from edges import get_edges
-from graph import make_graph
-from tsp import create_tsps, parrallel_solve_tsps
-from read_tour import read_tours
 from find_beta import find_beta, scatterplot
-from route import route, plot_route, paths_subset
+from graph import make_graph
+from nodes import get_nodes
 from pytictoc import TicToc
+from read_tour import read_tours
+from tsp import parrallel_solve_tsps
 
 tic = TicToc()
 tic.tic()
@@ -31,7 +30,9 @@ print(f"{len(edges)} edges extracted.")
 
 print("Making the graph...")
 graph = make_graph(nodes, buildings, edges, weights)
-print(f"Graph has {len(graph.vs)} vertices and {len(graph.es)} edges. It contains {len(graph.components())} component(s).")
+print(
+    f"Graph has {len(graph.vs)} vertices and {len(graph.es)} edges. It contains {len(graph.components())} component(s)."
+)
 
 tic.toc()
 tic.tic()

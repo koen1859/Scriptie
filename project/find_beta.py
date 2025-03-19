@@ -1,6 +1,8 @@
 import math
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
+
 
 def find_beta(lengths):
     A = 2316 * 1000000
@@ -19,6 +21,7 @@ def find_beta(lengths):
 
     return x, y, b_hat, b_hat_n
 
+
 # def find_beta(lengths):
 #     A = 2959.68 * 1000000
 #     b, x, y = [], [], []
@@ -32,13 +35,18 @@ def find_beta(lengths):
 #
 #     return x, y, b_hat
 
+
 def scatterplot(lengths, x, y, b_hat):
     A = 2316 * 1000000
     line = [b_hat * math.sqrt(n * A) for n in sorted(lengths.keys())]
 
-    plt.figure(figsize = (20,15))
-    plt.scatter(np.log(x), np.log(y), label="Simulated values", alpha = 0.6)
-    plt.plot(np.log(sorted(lengths.keys())), np.log(line), label=f"Estimated line b = {b_hat:.2f}")
+    plt.figure(figsize=(20, 15))
+    plt.scatter(np.log(x), np.log(y), label="Simulated values", alpha=0.6)
+    plt.plot(
+        np.log(sorted(lengths.keys())),
+        np.log(line),
+        label=f"Estimated line b = {b_hat:.2f}",
+    )
     plt.xlabel("n (number of locations (log scale))")
     plt.ylabel("y (TSP path length (m) (log scale))")
     plt.legend()

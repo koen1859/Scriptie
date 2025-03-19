@@ -1,12 +1,10 @@
 import psycopg2
-from config import DB_NAME, DB_USER, DB_HOST, DB_PORT
+from config import DB_HOST, DB_NAME, DB_PORT, DB_USER
+
 
 def get_road_data():
     connection = psycopg2.connect(
-        dbname=DB_NAME,
-        user=DB_USER,
-        host=DB_HOST,
-        port=DB_PORT
+        dbname=DB_NAME, user=DB_USER, host=DB_HOST, port=DB_PORT
     )
     cursor = connection.cursor()
     cursor.execute("""
@@ -38,12 +36,10 @@ def get_road_data():
     connection.close()
     return roads
 
+
 def get_addresses():
     connection = psycopg2.connect(
-        dbname=DB_NAME,
-        user=DB_USER,
-        host=DB_HOST,
-        port=DB_PORT
+        dbname=DB_NAME, user=DB_USER, host=DB_HOST, port=DB_PORT
     )
     cursor = connection.cursor()
     cursor.execute("""

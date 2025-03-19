@@ -1,7 +1,8 @@
 from create_tsp import create_tsp
-from solve_tsp import solve_tsp
 from read_tour import read_tour
-from route import route, plot_route
+from route import plot_route, route
+from solve_tsp import solve_tsp
+
 
 def run_simulation(graph, nodes, num_runs, num_locations, plot):
     solutions, lengths = {}, {}

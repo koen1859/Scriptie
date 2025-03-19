@@ -1,7 +1,7 @@
+from math import cos, radians, sqrt
+
 import igraph as ig
-from math import radians, cos, sqrt
-from shapely.geometry import Point
-from scipy.spatial import KDTree
+
 
 def distance(node1, node2):
     # Earth’s radius in meters
@@ -13,8 +13,9 @@ def distance(node1, node2):
     y = lat2 - lat1
     return R * sqrt(x**2 + y**2)
 
+
 def make_graph(nodes, buildings, edges, weights):
-    graph = ig.Graph(directed = True)
+    graph = ig.Graph(directed=True)
 
     all_nodes = {**nodes, **buildings}
 
@@ -31,4 +32,4 @@ def make_graph(nodes, buildings, edges, weights):
     graph.add_edges(edge_indices)
     graph.es["weight"] = weights
 
-    return graph.subgraph(max(graph.components(), key = len))
+    return graph.subgraph(max(graph.components(), key=len))

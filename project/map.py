@@ -1,6 +1,7 @@
 import folium
 import numpy as np
 
+
 def create_folium_map(nodes, edges, buildings, map_path="graph_map.html"):
     # Extract node coordinates for centering the map
     all_nodes = {**nodes, **buildings}
@@ -22,14 +23,11 @@ def create_folium_map(nodes, edges, buildings, map_path="graph_map.html"):
     folium_map.save(map_path)
     print(f"Map saved to {map_path}")
 
+
 def create_map(roads, filename):
     m = folium.Map(location=[53.2194, 6.5665], zoom_start=12)
 
     for road in roads:
         trail_coordinates = list(zip(road[2], road[3]))
-        folium.PolyLine(
-            trail_coordinates,
-            tooltip = str(road[0]),
-            color = "red"
-        ).add_to(m)
+        folium.PolyLine(trail_coordinates, tooltip=str(road[0]), color="red").add_to(m)
     m.save(f"maps/{filename}")

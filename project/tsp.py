@@ -1,9 +1,11 @@
-from sample import sample
-from distance_dict import distance_dict
 import json
-import subprocess
 import multiprocessing
 import os
+import subprocess
+
+from distance_dict import distance_dict
+from sample import sample
+
 
 def create_tsps(graph, num_runs, num_locations):
     for i in num_locations:
@@ -27,15 +29,17 @@ def create_tsps(graph, num_runs, num_locations):
                     f.write(" ".join(row) + "\n")
                 f.write("EOF\n")
 
-            with open(f"tsps/index_to_location_{i}_{run}.json", 'w') as f:
+            with open(f"tsps/index_to_location_{i}_{run}.json", "w") as f:
                 json.dump(index_to_location, f)
 
             with open(f"tsps/problem_{i}_{run}.par", "w") as f:
                 f.write(f"PROBLEM_FILE = tsps/problem_{i}_{run}.tsp\n")
                 f.write(f"OUTPUT_TOUR_FILE = tsps/tour_{i}_{run}.txt\n")
 
+
 def solve_tsp(parameter_file):
-    subprocess.run(["LKH", f"tsps/{parameter_file}"], check = True)
+    subprocess.run(["LKH", f"tsps/{parameter_file}"], check=True)
+
 
 def parrallel_solve_tsps(num_threads):
     par_files = [f for f in os.listdir("tsps/") if f.endswith(".par")]
