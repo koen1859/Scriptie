@@ -4,12 +4,8 @@ from edges import get_edges
 from find_beta import find_beta, scatterplot
 from graph import make_graph
 from nodes import get_nodes
-from pytictoc import TicToc
 from read_tour import read_tours
-from tsp import parrallel_solve_tsps
-
-tic = TicToc()
-tic.tic()
+from tsp import parrallel_solve_tsps, create_tsps
 
 print("Importing the roads...")
 roads = get_road_data()
@@ -34,21 +30,14 @@ print(
     f"Graph has {len(graph.vs)} vertices and {len(graph.es)} edges. It contains {len(graph.components())} component(s)."
 )
 
-tic.toc()
-tic.tic()
-
 # print("Visualizing the road network on the map...")
 # create_map(roads, "Groningen.html")
 
-# print("Creating TSP instances...")
-# create_tsps(graph, 100, range(10, 90, 2))
-# tic.toc()
-# tic.tic()
+print("Creating TSP instances...")
+create_tsps(graph, 100, range(100, 110, 3), 8)
 
 print("Solving the TSPs...")
 parrallel_solve_tsps(19)
-tic.toc()
-tic.tic()
 
 print("Reading the output...")
 tours, distances = read_tours()
@@ -58,5 +47,4 @@ tours, distances = read_tours()
 
 print("Finding beta and making scatter plot...")
 x, y, b_hat, b = find_beta(distances)
-tic.toc()
 scatterplot(distances, x, y, b_hat)
