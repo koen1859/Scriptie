@@ -3,8 +3,8 @@ import multiprocessing
 import os
 import subprocess
 
-from distance_dict import distance_dict
-from sample import sample
+from project.distance_dict import distance_dict
+from project.sample import sample
 
 
 # def create_tsps(graph, num_runs, num_locations):
@@ -35,6 +35,7 @@ from sample import sample
 #             with open(f"tsps/problem_{i}_{run}.par", "w") as f:
 #                 f.write(f"PROBLEM_FILE = tsps/problem_{i}_{run}.tsp\n")
 #                 f.write(f"OUTPUT_TOUR_FILE = tsps/tour_{i}_{run}.txt\n")
+
 
 def generate_tsp(graph, i, run):
     """Generates a single TSP instance and writes necessary files."""
@@ -74,6 +75,7 @@ def create_tsps(graph, num_runs, num_locations, num_threads):
 
     with multiprocessing.Pool(num_threads) as pool:
         pool.starmap(generate_tsp, tasks)
+
 
 def solve_tsp(parameter_file):
     subprocess.run(["LKH", f"tsps/{parameter_file}"], check=True)

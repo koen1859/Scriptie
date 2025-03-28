@@ -1,4 +1,4 @@
-from graph import distance
+from project.graph import distance
 from shapely.geometry import Point
 from shapely.strtree import STRtree
 

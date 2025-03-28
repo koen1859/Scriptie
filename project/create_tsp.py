@@ -1,7 +1,7 @@
 import json
 
-from distance_dict import distance_dict
-from sample import sample
+from project.distance_dict import distance_dict
+from project.sample import sample
 
 
 def create_parameter_file():
