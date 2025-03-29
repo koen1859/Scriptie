@@ -31,8 +31,8 @@ print(
     f"Graph has {len(graph.vs)} vertices and {len(graph.es)} edges. It contains {len(graph.components())} component(s)."
 )
 
-print("Visualizing the road network on the map...")
-create_map(roads, "Groningen.html")
+# print("Visualizing the road network on the map...")
+# create_map(roads, "Groningen.html")
 
 # print("Creating TSP instances...")
 # create_tsps(graph, 10, range(10, 150, 2), 16)
