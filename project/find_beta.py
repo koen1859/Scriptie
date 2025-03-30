@@ -22,20 +22,6 @@ def find_beta(lengths):
     return x, y, b_hat, b_hat_n
 
 
-# def find_beta(lengths):
-#     A = 2959.68 * 1000000
-#     b, x, y = [], [], []
-#
-#     for n, lengths_list in lengths.items():
-#         for length in lengths_list:
-#             b.append(length / math.sqrt(n * A))
-#             x.append(n)
-#             y.append(length)
-#     b_hat = sum(b) / len(b)
-#
-#     return x, y, b_hat
-
-
 def scatterplot(lengths, x, y, b_hat):
     A = 2316 * 1000000
     line = [b_hat * math.sqrt(n * A) for n in sorted(lengths.keys())]

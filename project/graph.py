@@ -1,9 +1,9 @@
 from math import cos, radians, sqrt
-
+from typing import Union
 import igraph as ig
 
 
-def distance(node1, node2):
+def distance(node1: tuple[float, float], node2: tuple[float, float]) -> float:
     # Earth’s radius in meters
     R = 6371000
     # Convert degrees to radians
@@ -14,7 +14,12 @@ def distance(node1, node2):
     return R * sqrt(x**2 + y**2)
 
 
-def make_graph(nodes, buildings, edges, weights):
+def make_graph(
+    nodes: dict[str, tuple[float, float]],
+    buildings: dict[str, tuple[float, float]],
+    edges: list[tuple[str, str]],
+    weights: list[float],
+) -> ig.Graph:
     graph = ig.Graph(directed=True)
 
     all_nodes = {**nodes, **buildings}
