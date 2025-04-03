@@ -1,8 +1,9 @@
 import folium
-import numpy as np
 
 
-def create_map(roads, filename):
+def create_map(
+    roads: list[tuple[int, list[int], list[float], list[float], str]], filename: str
+):
     m = folium.Map(location=[53.2194, 6.5665], zoom_start=12)
 
     for road in roads:

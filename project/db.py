@@ -1,5 +1,5 @@
 import psycopg2
-from project.config import DB_HOST, DB_NAME, DB_PORT, DB_USER
+from config import DB_HOST, DB_NAME, DB_PORT, DB_USER
 
 
 def get_road_data():
@@ -46,9 +46,15 @@ def get_addresses():
     cursor = connection.cursor()
     cursor.execute(
         """
-        SELECT n.id, n.lat / 10^7, n.lon / 10^7
-        FROM planet_osm_nodes AS n
-        WHERE n.tags ->> 'addr:postcode' IS NOT NULL;
+        SELECT 
+            n.id, 
+            n.lat / 10^7, 
+            n.lon / 10^7, 
+            n.tags->>'addr:city' AS city
+        FROM 
+            planet_osm_nodes AS n
+        WHERE 
+            n.tags ->> 'addr:postcode' IS NOT NULL;
     """
     )
     addresses = cursor.fetchall()

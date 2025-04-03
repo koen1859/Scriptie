@@ -3,9 +3,9 @@ import os
 import re
 
 
-def read_tours():
-    tour_files = sorted([f for f in os.listdir("tsps/") if f.endswith(".txt")])
-    json_files = sorted([f for f in os.listdir("tsps/") if f.endswith(".json")])
+def read_tours(dirname):
+    tour_files = sorted([f for f in os.listdir(f"{dirname}/") if f.endswith(".txt")])
+    json_files = sorted([f for f in os.listdir(f"{dirname}/") if f.endswith(".json")])
 
     tours, distances = {}, {}
     for tour_file, json_file in zip(tour_files, json_files):
@@ -19,10 +19,10 @@ def read_tours():
             tours[num_locations] = []
             distances[num_locations] = []
 
-        with open(f"tsps/{json_file}") as f:
+        with open(f"{dirname}/{json_file}") as f:
             index_to_location = json.load(f)
 
-        with open(f"tsps/{tour_file}") as f:
+        with open(f"{dirname}/{tour_file}") as f:
             lines = f.readlines()
 
         start = lines.index("TOUR_SECTION\n") + 1

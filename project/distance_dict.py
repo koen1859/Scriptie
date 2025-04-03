@@ -1,4 +1,7 @@
-def distance_dict(graph, locations):
+import igraph as ig
+
+
+def distance_dict(graph: ig.Graph, locations):
     distances = {}
     all_shortest_paths = graph.shortest_paths_dijkstra(
         source=locations, target=locations, weights="weight"

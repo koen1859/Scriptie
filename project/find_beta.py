@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def find_beta(lengths):
-    A = 2316 * 1000000
+def find_beta(lengths, area):
+    A = area * 1000000
     b, x, y = [], [], []
     b_hat_n = {}
 
@@ -22,8 +22,8 @@ def find_beta(lengths):
     return x, y, b_hat, b_hat_n
 
 
-def scatterplot(lengths, x, y, b_hat):
-    A = 2316 * 1000000
+def scatterplot(lengths, x, y, b_hat, area, filename):
+    A = area * 1000000
     line = [b_hat * math.sqrt(n * A) for n in sorted(lengths.keys())]
 
     plt.figure(figsize=(20, 15))
@@ -37,5 +37,21 @@ def scatterplot(lengths, x, y, b_hat):
     plt.ylabel("y (TSP path length (m) (log scale))")
     plt.legend()
     plt.title("Scatterplot of TSP path lengths with estimated line y = b * sqrt(n * A)")
-    plt.savefig("plots/scatter.png")
+    plt.savefig(f"plots/{filename}")
+    plt.show()
+
+
+def errorsplot(lengths, x, y, b_hat, area, filename):
+    A = area * 1000000
+    sorted_keys = sorted(lengths.keys())
+    line = [b_hat * math.sqrt(n * A) for n in sorted_keys]
+    errors = [line[sorted_keys.index(x[i])] - y[i] for i in range(len(x))]
+
+    plt.figure(figsize=(20, 15))
+    plt.scatter(x, errors, label="Prediction errors", alpha=0.6)
+    plt.xlabel("n (number of locations)")
+    plt.ylabel("Error (TSP path length (m))")
+    plt.legend()
+    plt.title("Scatterplot of TSP path length prediction errors")
+    plt.savefig(f"plots/{filename}")
     plt.show()

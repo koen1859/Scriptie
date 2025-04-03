@@ -1,5 +1,4 @@
 from math import cos, radians, sqrt
-from typing import Union
 import igraph as ig
 
 
@@ -17,6 +16,7 @@ def distance(node1: tuple[float, float], node2: tuple[float, float]) -> float:
 def make_graph(
     nodes: dict[str, tuple[float, float]],
     buildings: dict[str, tuple[float, float]],
+    building_city: dict[str, str],
     edges: list[tuple[str, str]],
     weights: list[float],
 ) -> ig.Graph:
@@ -27,9 +27,11 @@ def make_graph(
     node_names = list(all_nodes.keys())
     coords = list(all_nodes.values())
     is_building = [1 if node in buildings else 0 for node in node_names]
+    city = [building_city[node] if node in buildings else None for node in node_names]
     graph.add_vertices(node_names)
     graph.vs["coords"] = coords
     graph.vs["is_building"] = is_building
+    graph.vs["city"] = city
 
     name_to_index = {name: idx for idx, name in enumerate(node_names)}
     edge_indices = [(name_to_index[u], name_to_index[v]) for u, v in edges]

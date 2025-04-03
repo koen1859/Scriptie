@@ -24,9 +24,9 @@ def plot_route(nodes, buildings, locations, path, distance, filename):
     m.save(f"maps/{filename}")
 
 
-def paths_subset(graph, nodes, buildings, tours, distances):
+def paths_subset(graph, nodes, buildings, tours, distances, city):
     for i in tours.keys():
         locations = tours[i][0]
         distance = distances[i][0]
         path = route(graph, locations)
-        plot_route(nodes, buildings, locations, path, distance, f"TSP_{i}.html")
+        plot_route(nodes, buildings, locations, path, distance, f"TSP_{city}_{i}.html")
