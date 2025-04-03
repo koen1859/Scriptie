@@ -36,18 +36,18 @@ print(
 # create_map(roads, "Groningen.html")
 
 print("Creating TSP instances...")
-create_tsps(graph, 50, range(10, 70, 1), 100, "Wildervank", "tsps_wildervank")
+create_tsps(graph, 50, range(10, 70, 1), 100, "Any", "tsps_all")
 
 print("Solving the TSPs...")
-parrallel_solve_tsps(19, "tsps_wildervank")
+parrallel_solve_tsps(19, "tsps_all")
 
 print("Reading the output...")
-tours, distances = read_tours("tsps_wildervank")
+tours, distances = read_tours("tsps_all")
 
 print("Visualizing some routes...")
-paths_subset(graph, nodes, buildings, tours, distances, "wildervank")
+paths_subset(graph, nodes, buildings, tours, distances, "all")
 
 print("Finding beta and making scatter plot...")
-x, y, b_hat, b = find_beta(distances, 28.09)
-scatterplot(distances, x, y, b_hat, 28.09, "scatter_wildervank")
-errorsplot(distances, x, y, b_hat, 28.09, "errors_wildervank")
+x, y, b_hat, b = find_beta(distances, 2316)
+scatterplot(distances, x, y, b_hat, 2316, "scatter_all")
+errorsplot(distances, x, y, b_hat, 2316, "errors_all")
