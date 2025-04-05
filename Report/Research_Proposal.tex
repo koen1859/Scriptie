@@ -1,0 +1,86 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[english]{babel}
+\usepackage{mathtools,amsthm,amssymb,amsmath}
+\usepackage{booktabs} % For better-looking tables
+\usepackage{dcolumn}  % For aligning decimal points in tables
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{ marvosym }
+\usepackage{eurosym}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage[longnamesfirst]{natbib}
+\newcommand{\N}[1]{\mathcal{N}\left(#1\right)}
+\newcommand{\Z}{\mathbb{Z}}\DeclareMathOperator*{\argmin}{arg\,min}
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+\newcommand{\given}{\,\middle|\,}
+\newcommand{\Bern}[1]{\mathrm{Bern}(#1)}
+\newcommand{\Bin}[1]{\mathrm{Bin}(#1)}
+\newcommand{\Exp}[1]{\mathrm{Exp}(#1)}
+\newcommand{\FS}[1]{\mathrm{FS}(#1)}
+\newcommand{\Geo}[1]{\mathrm{Geo}(#1)}
+\newcommand{\Norm}[1]{\mathrm{Norm}(#1)}
+\newcommand{\Pois}[1]{\mathrm{Pois}(#1)}
+\newcommand{\Unif}[1]{\mathrm{Unif}(#1)}
+\newcommand{\E}[1]{\,\mathsf{E}\left[#1\right]}
+\newcommand{\EE}[2]{\,\mathsf{E}_{#1}\left[#2\right]}
+\newcommand{\V}[1]{\,\mathsf{V}\left[#1\right]}
+\newcommand{\cov}[1]{\,\mathsf{Cov}\left[#1\right]}
+\renewcommand{\d}[1]{\,\textrm{d}#1}
+\newcommand{\1}[1]{\,I_{#1}} % indicator
+\renewcommand{\P}[1]{\,\mathbb{P}\left\{#1\right\}}
+\newcommand{\fat}[1]{\ThisStyle{\hstretch{1.2}{\ooalign{%
+  \kern.46pt$\SavedStyle#1$\cr\kern.33pt$\SavedStyle#1$\cr%
+  \kern.2pt$\SavedStyle#1$\cr$\SavedStyle#1$}}}}
+\renewcommand{\ln}[1]{\,\mathrm{ln}\left[#1\right]}
+\newcommand*{\B}[1]{\ifmmode\bm{#1}\else\textbf{#1}\fi}
+\title{Research Proposal\\
+Assessment of approximation method for TSP path length on a road network: a simulation study}
+\author{Koen Stevens\\
+        S5302137}
+\date{\today}
+\begin{document}
+\maketitle
+\section{Introduction}
+The Traveling Salesman Problem is an important problem in operations research. It is particularly relevant for last-mile carriers and other logistics companies where efficient routing directly impacts cost, time and service quality. Efficient approximation methods are important for practical applications where exact solutions are too computationally intensive to conduct. 
+\section{Literature Review}
+\cite{beardwood1959shortest} proposed the formula
+\begin{align}
+    L=\beta\sqrt{nA}
+    \label{Beardwood Thm}
+\end{align}
+as a predictor for the length of the shortest TSP path measured by euclidean distance through $n$ random locations inside an area in $\mathbb{R}^2$ with area $A$, where $\beta$ is some constant. This constant has been estimated in various research, with estimations ranging between $0.7$ and $1$. \cite{doi:10.1177/03611981211049433} provides a list of this research.
+\section{Problem Formulation}
+The main objective of this research is to estimate $\beta$ and assess how well formula \ref{Beardwood Thm}, approximates the length of the optimal TSP path in a real-world area.
+\section{Research Question}
+A few questions arise in order to tackle this problem:
+\begin{itemize}
+    \item What is $\beta$ in formula \ref{Beardwood Thm} when applied to a real road network?
+    \item How well does this formula predict the length of the TSP path on a road network?
+    \item Do the value of $\beta$ and the performance of the formula vary across different types of areas (rural or urban, grid-like or organic)?
+\end{itemize}
+\section{Hypotheses}
+I expect to find a higher $\beta$ than the $\beta$ that has been estimated previously in simulations where the $\mathbb{R}^2$ was used and no road network was considered, since traveling over a road network is always just as long or longer than traveling in a straight line. I also expect this $\beta$ to vary when different types of areas are considered. 
+\section{Data}
+The data used is \href{https://www.openstreetmap.org/#map=12/53.2184/6.5702}{OpenStreetMap} data for the \href{https://download.geofabrik.de/europe/netherlands/groningen.html}{Province of Groningen}.
+\section{Methodology}
+By comparing the estimated and actual TSP path lengths for simulated sets of locations within the area, this study aims to evaluate the accuracy of this formula in a real-world setting.
+\begin{enumerate}
+    \item Make a connected graph of the road network of Groningen, using the igraph module in python.
+    \item Simulate locations on this graph.
+    \item Make a distance matrix of these locations.
+    \item Use an efficient method to find the shortest TSP path (LKH).
+    \item Compute the length of this TSP path.
+    \item Conduct 2-5 a number of times and estimate $\beta$.
+    \item Assess how good of a predictor the formula $L=\beta\sqrt{nA}$ is.
+\end{enumerate}
+\bibliography{literature}
+\bibliographystyle{rug-econometrics}
+\section{Appendix}
+\href{https://github.com/koen1859/Scriptie}{Some code of the current progress.}\\
+\href{https://koenstevens.nl/?page_id=182}{Some visualizations of the road network and paths generated with shortest path algorithm.}
+\end{document}
