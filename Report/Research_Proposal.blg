@@ -6,15 +6,15 @@ Database file #1: literature.bib
 Warning--can't use both volume and number fields in beardwood1959shortest
 You've used 2 entries,
             2861 wiz_defined-function locations,
-            627 strings with 5274 characters,
-and the built_in function-call counts, 1662 in all, are:
-= -- 147
+            627 strings with 5272 characters,
+and the built_in function-call counts, 1672 in all, are:
+= -- 150
 > -- 113
 < -- 2
 + -- 36
 - -- 38
-* -- 148
-:= -- 284
+* -- 149
+:= -- 285
 add.period$ -- 7
 call.type$ -- 2
 change.case$ -- 15
@@ -35,14 +35,14 @@ purify$ -- 27
 quote$ -- 0
 skip$ -- 54
 stack$ -- 0
-substring$ -- 95
+substring$ -- 99
 swap$ -- 22
 text.length$ -- 2
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 40
 warning$ -- 1
-while$ -- 20
+while$ -- 21
 width$ -- 0
 write$ -- 31
 (There was 1 warning)

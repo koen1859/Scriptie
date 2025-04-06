@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex Research_Proposal"] 1743855254.99075 "Research_Proposal.aux" "Research_Proposal.bbl" "Research_Proposal" 1743855255.66978 0
-  "./literature.bib" 1743855074.96256 2110 881d8f59f22530e2c8d7a02cdda1f6c4 ""
-  "./rug-econometrics.bst" 1743854644.29013 39175 49a9cb61f3a571688e7bb34761d12ccb ""
-  "Research_Proposal.aux" 1743855255.54343 1538 af7687cbff72c832f5d524c2e724a0f0 "pdflatex"
+["bibtex Research_Proposal"] 1743928162.45576 "Research_Proposal.aux" "Research_Proposal.bbl" "Research_Proposal" 1743928333.35996 0
+  "./literature.bib" 1743891347.78943 2643 441a0e9cdfb77c0abd3536b7746495b8 ""
+  "./rug-econometrics.bst" 1743871244.37479 39175 49a9cb61f3a571688e7bb34761d12ccb ""
+  "Research_Proposal.aux" 1743928333.29046 1538 af7687cbff72c832f5d524c2e724a0f0 "pdflatex"
   (generated)
   "Research_Proposal.bbl"
   "Research_Proposal.blg"
   (rewritten before read)
-["pdflatex"] 1743855255.02433 "Research_Proposal.tex" "Research_Proposal.pdf" "Research_Proposal" 1743855255.67 0
+["pdflatex"] 1743928333.0151 "Research_Proposal.tex" "Research_Proposal.pdf" "Research_Proposal" 1743928333.36011 0
   "/nix/store/ak6zc4i2f510gkzw5ir4cfsbykd7jhkh-texlive-combined-medium-2024-final/share/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1 334078 9022f9ae67aac02c94a2b23d07d2d16b ""
   "/nix/store/ak6zc4i2f510gkzw5ir4cfsbykd7jhkh-texlive-combined-medium-2024-final/share/texmf-var/web2c/pdftex/pdflatex.fmt" 1 3146044 03c5b23816b8b0728181cec341e12718 ""
   "/nix/store/ak6zc4i2f510gkzw5ir4cfsbykd7jhkh-texlive-combined-medium-2024-final/share/texmf-var/web2c/texmf.cnf" 1 44231 f862642beec4d532a9add611f74ee59f ""
@@ -125,11 +125,11 @@
   "/nix/store/mslxirhh7wzsf4arm841ml14pw22ph5w-texlive-combined-medium-2024-final-texmfdist/tex/latex/tools/longtable.sty" 1 15900 3cb191e576c7a313634d2813c55d4bf1 ""
   "/nix/store/mslxirhh7wzsf4arm841ml14pw22ph5w-texlive-combined-medium-2024-final-texmfdist/tex/latex/tools/tabularx.sty" 1 7243 e5dac1240636811edb77568b81818372 ""
   "/nix/store/mslxirhh7wzsf4arm841ml14pw22ph5w-texlive-combined-medium-2024-final-texmfdist/tex/latex/url/url.sty" 1 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
-  "Research_Proposal.aux" 1743855255.54343 1538 af7687cbff72c832f5d524c2e724a0f0 "pdflatex"
-  "Research_Proposal.bbl" 1743855255.01743 726 22f03212f8a2858e73a5bc031e266138 "bibtex Research_Proposal"
-  "Research_Proposal.out" 1743855255.54643 843 89319e7ba66fe66f3a849b7abd6344d3 "pdflatex"
-  "Research_Proposal.tex" 1743855253.24142 4943 956cc834b00dc5529f1da3f069ac4c66 ""
-  "natbib.sty" 1743854567.21602 35598 0d001543fdca1f991ee13b757cacd691 ""
+  "Research_Proposal.aux" 1743928333.29046 1538 af7687cbff72c832f5d524c2e724a0f0 "pdflatex"
+  "Research_Proposal.bbl" 1743928162.47281 726 22f03212f8a2858e73a5bc031e266138 "bibtex Research_Proposal"
+  "Research_Proposal.out" 1743928333.29146 843 89319e7ba66fe66f3a849b7abd6344d3 "pdflatex"
+  "Research_Proposal.tex" 1743928331.54645 4934 2ad28489344b9e6039021a998f24ec00 ""
+  "natbib.sty" 1743871244.37479 35598 0d001543fdca1f991ee13b757cacd691 ""
   (generated)
   "Research_Proposal.aux"
   "Research_Proposal.log"
