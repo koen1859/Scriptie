@@ -1,0 +1,51 @@
+#+TITLE: Bachelor Thesis
+#+SUBTITLE: Assessment of approximation method for TSP path length on a road network: a simulation study
+#+AUTHOR: Koen Stevens (S5302137)
+#+DATE: \today
+#+LANGUAGE: en
+#+OPTIONS: toc:nil num:t
+#+LATEX_CLASS: article
+#+LATEX_CLASS_OPTIONS: [a4paper,11pt]
+#+LATEX_HEADER: \usepackage{mathtools,amsthm,amssymb,amsmath}
+#+LATEX_HEADER: \usepackage{booktabs}
+#+LATEX_HEADER: \usepackage{dcolumn}
+#+LATEX_HEADER: \usepackage{bm}
+#+LATEX_HEADER: \usepackage{graphicx}
+#+LATEX_HEADER: \usepackage{subfig}
+#+LATEX_HEADER: \usepackage{tabularx}
+#+LATEX_HEADER: \usepackage{longtable}
+#+LATEX_HEADER: \usepackage[longnamesfirst]{natbib}
+#+LATEX_HEADER: \usepackage{marvosym}
+#+LATEX_HEADER: \usepackage{eurosym}
+#+LATEX_HEADER: \usepackage{hyperref}
+#+BIBLIOGRAPHY: literature.bib
+#+CITE_EXPORT: natbib
+#+BIBLIOGRAPHYSTYLE: rug-econometrics
+#+OPTIONS: toc:nil num:nil
+#+PROPERTY: header-args:python :results output
+
+* Introduction
+  The Traveling Salesman Problem is an important problem in operations research. 
+  It is particularly relevant for last-mile carriers and other logistics companies where efficient 
+  routing directly impacts cost, time and service quality. Efficient approximation methods are 
+  important for practical applications where exact solutions are too computationally intensive to conduct. 
+  cite:beardwood1959shortest proved the relation:
+  #+NAME: eq:beardwood
+  #+BEGIN_EXPORT latex
+  \begin{align}
+  L \to \beta \sqrt{nA}, \quad \text{as } n \to \infty
+  \label{eq:beardwood}
+  \end{align}
+  #+END_EXPORT
+  as an estimation for the length of the shortest TSP path measured by Euclidean distance through $n$ random locations inside an area in $\mathbb{R}^2$ with area $A$, where $\beta$ is some proportionality constant. This is an asymptotic result, but it also holds for small $n$ in areas of regular shape, such as triangles or squares.
+
+* Literature Review
+  _TODO_
+* Methodology
+* References
+#+print_bibliography:
+* Appendix
+  #+begin_src python
+    print("Hello from Python!")
+  #+end_src
+  #+RESULTS:
