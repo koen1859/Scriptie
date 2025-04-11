@@ -21,7 +21,7 @@
 #+BIBLIOGRAPHY: literature.bib
 #+CITE_EXPORT: natbib
 #+BIBLIOGRAPHYSTYLE: rug-econometrics
-#+OPTIONS: toc:nil num:nil
+#+OPTIONS: toc:nil num:t
 #+PROPERTY: header-args:python :results output
 
 * Introduction
