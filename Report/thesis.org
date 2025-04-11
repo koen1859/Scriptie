@@ -23,6 +23,7 @@
 #+BIBLIOGRAPHYSTYLE: rug-econometrics
 #+OPTIONS: toc:nil num:t
 #+PROPERTY: header-args:python :results output
+#+LATEX: \newpage
 
 * Introduction
 The Traveling Salesman Problem is an important problem in operations research.
@@ -75,8 +76,3 @@ There is extensive research in approximation methods for the length of a TSP pat
 * References
 #+print_bibliography:
 * Appendix
-#+begin_src python
-print("Hello from Python!")
-#+end_src
-#+RESULTS:
-
