@@ -1,2 +1,5 @@
 project/maps/
 *.osm.pbf
+*.json
+*.txt
+*.tsp
