@@ -1,53 +1,94 @@
-from db import get_addresses, get_road_data
-from buildings import get_buildings
-from nodes import get_nodes
-from edges import get_edges
-from graph import make_graph
-from map import create_map
-from tsp import create_tsps, parrallel_solve_tsps, parroosterpoortel_solve_tsps
-from read_tour import read_tours
-from route import paths_subset
-from find_beta import find_beta, scatterplot, errorsplot
+from run_simulation import run_simulation
 
-print("Importing the roads...")
-roads = get_road_data()
-print(f"{len(roads)} roads imported.")
 
-print("Importing the buildings...")
-building_data = get_addresses()
-buildings, building_city = get_buildings(building_data)
-print(f"{len(buildings)} buildings imported.")
+areas = {
+    "groningen": [
+        "Hortusbuurt",
+        "Binnenstad",
+        "Oosterpoort",
+        "Rivierenbuurt",
+        "De Wijert",
+        "Oosterparkwijk",
+        "De Hoogte",
+        "Korrewegwijk",
+        "Schildersbuurt",
+        "Paddepoel",
+        "Oranjewijk",
+        "Tuinwijk",
+        "Selwerd",
+        "Vinkhuizen",
+        "Hoogkerk-zuid",
+        "Gravenburg",
+        "De Held",
+        "Reitdiep",
+        "Hoornse Meer",
+        "Corpus den Hoorn",
+        "Eemspoort",
+        "Euvelgunne",
+        "Driebond",
+        "Winschoterdiep",
+        "Eemskanaal",
+        "Helpman",
+        "Lewenborg",
+        "Beijum",
+        "Maarsveld",
+    ],
+    "noord_holland": [
+        "Schrijverswijk",
+        "Stad van de Zon",
+        "Stadshart",
+        "Jordaan",
+        "Slotervaart",
+        "IJburg",
+        "Oostelijke Eilanden",
+        "Oostelijk Havengebied",
+        "Frederik Hendrikbuurt",
+        "Van Lennepbuurt",
+        "Da Costabuurt",
+        "Kinkerbuurt",
+        "Kersenboogerd",
+        "Pax",
+        "Graan voor Visch",
+        "Vrijschot-Noord",
+        "Toolenburg",
+        "Floriande",
+        "Overbos",
+        "Bornholm",
+        "Beukenhorst-Oost",
+        "De Hoek",
+        "West",
+        "Zuid",
+        "Oost",
+        "Noord",
+        "De President",
+        "Graan voor Visch-Zuid",
+        "Zuidwijk",
+        "Buitenveldert-West",
+        "Buitenveldert",
+        "Apollobuurt",
+        "Stadionbuurt",
+        "Prinses Irenebuurt e.o.",
+        "Hoofddorppleinbuurt",
+        "Willemspark",
+        "Schinkelbuurt",
+        "Vondelparkbuurt",
+        "Helmersbuurt",
+        "Overtoomse Sluis",
+        "Museumkwartier",
+        "Rivierenbuurt",
+        "IJselbuurt",
+        "Scheldebuurt",
+        "Rijnbuurt",
+        "De Baarsjes",
+        "Landlust",
+        "Staatsliedenbuurt",
+        "Spaarndammerbuurt",
+        "De Pijp",
+        "Grachtengordel",
+        "Oud-Zuid",
+    ],
+}
 
-print("Extracting oosterpoort nodes...")
-nodes = get_nodes(roads)
-print(f"{len(nodes)} nodes extracted.")
-
-print("Extracting oosterpoort edges...")
-edges, weights = get_edges(roads, nodes, buildings)
-print(f"{len(edges)} edges extracted.")
-
-print("Making the graph...")
-graph = make_graph(nodes, buildings, building_city, edges, weights)
-print(
-    f"Graph has {len(graph.vs)} vertices and {len(graph.es)} edges. It contains {len(graph.components())} component(s)."
-)
-
-print("Visualizing the road network on the map...")
-create_map(roads, "Oosterpoort.html")
-
-print("Creating TSP instances...")
-create_tsps(graph, 10, range(10, 70, 1), 100, "Any", "tsps_oosterpoort")
-
-print("Solving the TSPs...")
-parrallel_solve_tsps(19, "tsps_all")
-
-print("Reading the output...")
-tours, distances = read_tours("tsps_oosterpoort")
-
-print("Visualizing some routes...")
-paths_subset(graph, nodes, buildings, tours, distances, "oosterpoort")
-
-print("Finding beta and making scatter plot...")
-x, y, b_hat, b = find_beta(distances, 2316)
-scatterplot(distances, x, y, b_hat, 2316, "scatter_oosterpoort")
-errorsplot(distances, x, y, b_hat, 2316, "errors_oosterpoort")
+for DB in areas.keys():
+    for neighborhood in areas[DB]:
+        run_simulation(DB, neighborhood)
