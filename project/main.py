@@ -88,7 +88,19 @@ areas = {
         "Oud-Zuid",
     ],
 }
+beta = {}
 
-for DB in areas.keys():
-    for neighborhood in areas[DB]:
-        run_simulation(DB, neighborhood)
+for DB, neighborhoods in areas.items():
+    for neighborhood in neighborhoods:
+        b = run_simulation(DB, neighborhood)
+        beta[f"{DB}-{neighborhood}"] = b
+        print(f"beta for {DB} {neighborhood} is: {b}")
+
+with open("beta_values.org", "w") as f:
+    f.write("| Province      | Neighborhood         | Beta      |\n")
+    f.write("|---------------+----------------------+-----------|\n")
+
+    for key, value in beta.items():
+        db, neighborhood = key.split("-", 1)
+        neighborhood = neighborhood.replace("_", " ")
+        f.write(f"| {db:<13} | {neighborhood:<20} | {value:.4f} |\n")

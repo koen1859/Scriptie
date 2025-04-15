@@ -33,3 +33,4 @@ def run_simulation(DB, neighborhood):
     x, y, b_hat, b = find_beta(distances, area)
     scatterplot(distances, x, y, b_hat, area, f"scatter_{DB}_{neighborhood}")
     errorsplot(distances, x, y, b_hat, area, f"errors_{DB}_{neighborhood}")
+    return b_hat

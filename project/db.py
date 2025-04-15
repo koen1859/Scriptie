@@ -7,65 +7,47 @@ def get_road_data(DB, neighborhood):
     cursor = connection.cursor()
     cursor.execute(
         f"""
-        WITH neighborhood_boundary_ways AS (
-            SELECT (member->>'ref')::bigint AS way_id
-            FROM planet_osm_rels AS r
-            CROSS JOIN LATERAL jsonb_array_elements(r.members) AS member
-            WHERE r.tags->>'place' = 'quarter'
-            AND r.tags->>'name' = '{neighborhood}'
-            AND member->>'role' = 'outer'
-            AND member->>'type' = 'W'
-        ),
-        boundary_geometries AS (
-            SELECT
-                w.id AS way_id,
-                ST_MakeLine(
-                    ARRAY(
-                        SELECT ST_SetSRID(ST_MakePoint(n.lon/1e7, n.lat/1e7), 4326)
-                        FROM unnest(w.nodes) WITH ORDINALITY AS node_id
-                        JOIN planet_osm_nodes AS n ON n.id = node_id.node_id
-                        ORDER BY ordinality
-                    )
-                ) AS geom
-            FROM planet_osm_ways AS w
-            JOIN neighborhood_boundary_ways ON w.id = way_id
-        ),
-        neighborhood_polygon AS (
-            SELECT ST_BuildArea(ST_Collect(geom)) AS geom
-            FROM boundary_geometries
+        WITH neighborhood AS (
+            SELECT ST_Transform(way, 4326) AS geom
+            FROM planet_osm_polygon
+            WHERE place = 'quarter'
+            AND name = '{neighborhood}'
         ),
         road_geometries AS (
             SELECT
                 w.id AS road_id,
-                ST_MakeLine(
-                    ARRAY(
-                        SELECT ST_SetSRID(ST_MakePoint(n.lon/1e7, n.lat/1e7), 4326)
-                        FROM unnest(w.nodes) WITH ORDINALITY AS node_id
-                        JOIN planet_osm_nodes AS n ON n.id = node_id.node_id
-                        ORDER BY ordinality
-                    )
-                ) AS geom
-            FROM planet_osm_ways AS w
+                w.nodes AS node_ids,
+                w.tags->>'oneway' AS oneway
+            FROM planet_osm_ways w,
+                 neighborhood nb
             WHERE w.tags->>'highway' IN (
-            'trunk', 'rest_area', 'track', 'bridleway', 'disused', 'service', 'secondary_link', 
-            'services', 'raceway', 'emergency_access_point', 'tertiary', 'primary', 'secondary', 
-            'tertiary_link', 'road', 'motorway', 'motorway_link', 'platform', 'construction', 
-            'corridor', 'primary_link', 'residential', 'trunk_link', 'bus_stop', 'trailhead', 
-            'living_street', 'unclassified', 'proposed')
+                'trunk', 'rest_area', 'track', 'bridleway', 'disused', 'service', 'secondary_link',
+                'services', 'raceway', 'emergency_access_point', 'tertiary', 'primary', 'secondary',
+                'tertiary_link', 'road', 'motorway', 'motorway_link', 'platform', 'construction',
+                'corridor', 'primary_link', 'residential', 'trunk_link', 'bus_stop', 'trailhead',
+                'living_street', 'unclassified', 'proposed'
+            )
+            AND ST_Intersects(
+                ST_MakeLine(ARRAY(
+                    SELECT ST_SetSRID(ST_MakePoint(n.lon / 1e7, n.lat / 1e7), 4326)
+                    FROM unnest(w.nodes) WITH ORDINALITY AS u(node_id, ordinality)
+                    JOIN planet_osm_nodes n ON n.id = u.node_id
+                    ORDER BY u.ordinality
+                )),
+                nb.geom
+            )
         )
         SELECT
-            w.id AS road_id,
+            rg.road_id,
             array_agg(n.id ORDER BY u.ordinality) AS node_ids,
             array_agg(n.lat / 1e7) AS node_lats,
             array_agg(n.lon / 1e7) AS node_lons,
-            w.tags->>'oneway' AS oneway
+            rg.oneway
         FROM road_geometries rg
         JOIN planet_osm_ways w ON rg.road_id = w.id
         JOIN LATERAL unnest(w.nodes) WITH ORDINALITY AS u(node_id, ordinality) ON true
         JOIN planet_osm_nodes n ON n.id = u.node_id
-        CROSS JOIN neighborhood_polygon np
-        WHERE ST_Intersects(rg.geom, np.geom)
-        GROUP BY w.id, w.tags->>'oneway';
+        GROUP BY rg.road_id, rg.oneway;
         """
     )
     roads = cursor.fetchall()
@@ -79,47 +61,30 @@ def get_addresses(DB, neighborhood):
     cursor = connection.cursor()
     cursor.execute(
         f"""
-        WITH neighborhood_boundary_ways AS (
-            SELECT (member->>'ref')::bigint AS way_id
-            FROM planet_osm_rels AS r
-            CROSS JOIN LATERAL jsonb_array_elements(r.members) AS member
-            WHERE r.tags->>'place' = 'quarter'
-            AND r.tags->>'name' = '{neighborhood}'
-            AND member->>'role' = 'outer'
-            AND member->>'type' = 'W'
+        WITH neighborhood AS (
+            SELECT ST_Transform(way, 4326) AS way
+            FROM planet_osm_polygon
+            WHERE place = 'quarter'
+            AND name = '{neighborhood}'
         ),
-        boundary_geometries AS (
+        matched_nodes AS (
             SELECT
-                w.id AS way_id,
-                ST_MakeLine(
-                    ARRAY(
-                        SELECT ST_SetSRID(ST_MakePoint(n.lon/1e7, n.lat/1e7), 4326)
-                        FROM unnest(w.nodes) WITH ORDINALITY AS node_id
-                        JOIN planet_osm_nodes AS n ON n.id = node_id.node_id
-                        ORDER BY ordinality
-                    )
-                ) AS geom
-            FROM planet_osm_ways AS w
-            JOIN neighborhood_boundary_ways ON w.id = way_id
-        ),
-        neighborhood_polygon AS (
-            SELECT ST_BuildArea(ST_Collect(geom)) AS geom
-            FROM boundary_geometries
+                n.id,
+                n.lat / 1e7 AS lat,
+                n.lon / 1e7 AS lon,
+                n.tags->>'addr:city' AS city
+            FROM
+                planet_osm_nodes AS n,
+                neighborhood AS nb
+            WHERE
+                n.tags->>'addr:postcode' IS NOT NULL
+                AND ST_Within(
+                    ST_SetSRID(ST_MakePoint(n.lon / 1e7, n.lat / 1e7), 4326),
+                    nb.way
+                )
         )
-        SELECT 
-            n.id, 
-            n.lat / 1e7 AS lat, 
-            n.lon / 1e7 AS lon, 
-            n.tags->>'addr:city' AS city
-        FROM 
-            planet_osm_nodes AS n
-        JOIN neighborhood_polygon np ON ST_Within(
-            ST_SetSRID(ST_MakePoint(n.lon/1e7, n.lat/1e7), 4326),
-            np.geom
-        )
-        WHERE 
-            n.tags->>'addr:postcode' IS NOT NULL
-    """
+        SELECT * FROM matched_nodes;
+        """
     )
     addresses = cursor.fetchall()
     cursor.close()
@@ -132,41 +97,14 @@ def get_area(DB, neighborhood):
     cursor = connection.cursor()
     cursor.execute(
         f"""
-            WITH neighborhood_boundary_ways AS (
-                SELECT (member->>'ref')::bigint AS way_id
-                FROM planet_osm_rels AS r
-                CROSS JOIN LATERAL jsonb_array_elements(r.members) AS member
-                WHERE r.tags->>'place' = 'quarter'
-                AND r.tags->>'name' = '{neighborhood}'
-                AND member->>'role' = 'outer'
-                AND member->>'type' = 'W'
-            ),
-            boundary_geometries AS (
-                SELECT ST_MakeLine(
-                        ARRAY(
-                            SELECT ST_SetSRID(ST_MakePoint(n.lon/1e7, n.lat/1e7), 4326)
-                            FROM unnest(w.nodes) WITH ORDINALITY AS node_id
-                            JOIN planet_osm_nodes AS n ON n.id = node_id.node_id
-                            ORDER BY ordinality
-                        )
-                    ) AS geom
-                FROM planet_osm_ways AS w
-                JOIN neighborhood_boundary_ways ON w.id = way_id
-            ),
-            neighborhood_polygon AS (
-                SELECT 
-                    ST_BuildArea(ST_Collect(geom)) AS geom,
-                    -- Calculate UTM zone and cast to integer
-                    ST_Transform(
-                        ST_BuildArea(ST_Collect(geom)),
-                        -- Cast the entire calculation to integer
-                        (32600 + floor((ST_X(ST_Centroid(ST_Collect(geom))) + 180)/6 + 1))::integer
-                    ) AS utm_geom
-                FROM boundary_geometries
-            )
-            SELECT 
-                ST_Area(utm_geom)/1000000
-            FROM neighborhood_polygon;
+        SELECT 
+            p.way_area/1000000
+        FROM 
+            planet_osm_polygon as p 
+        WHERE 
+            place='quarter' 
+        AND 
+            name='{neighborhood}';
         """
     )
     area = cursor.fetchall()[0][0]

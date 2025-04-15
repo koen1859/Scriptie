@@ -71,8 +71,28 @@ areas, with the goal of understanding the driving factors behind the varying res
 In section 2 we dive deeper in the context and previous research in this field. Then, in section 3
 we show the methodology ...
 * Literature Review
-There is extensive research in approximation methods for the length of a TSP path.
+cite:merchan2019empirical use circuity factors to measure the relative detour incurred for
+traveling in a road network, compared to the euclidean distance. This circuity factor is defined
+as, where $p$ and $q$ are locations:
+#+NAME: eq:circuity
+#+BEGIN_EXPORT latex
+\begin{align}
+	c = \frac{d_{c}(p,q)}{d_{L_{2}}(p,q)}
+	\label{eq:circuity}
+\end{align}
+#+END_EXPORT
+$c$ is greater or equal to 1, a value closer to 1 indicates a more efficient network. This
+circuity factor has been estimated many times for different road networks, with results ranging
+between $1.12$ and $5.60$ [cite:merchan2019empirical]. Then, equation \ref{eq:beardwood} becomes:
+#+NAME: eq:beardwood_circuity
+#+BEGIN_EXPORT latex
+\begin{align}
+	L\to c\beta\sqrt{nA},\text{ as }n\to\infty
+	\label{eq:beardwood_circuity}
+\end{align}
+#+END_EXPORT
 * Methodology
 * References
 #+print_bibliography:
 * Appendix
+#+INCLUDE: "../project/beta_values.org"
