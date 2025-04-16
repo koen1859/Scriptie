@@ -1,17 +1,19 @@
 In order to run this project you need to have postgres server set up on your system, below is how 
 I did it on my system as an example:
 ```nix
-postgresql = {
-  enable = true;
-  package = pkgs.postgresql_17;
-  dataDir = "/var/lib/postgresql/data";
-  extensions = with pkgs.postgresql17Packages; [postgis];
-  authentication = ''
-    local   all             all                                     trust
-    host    all             all             127.0.0.1/32            trust
-    host    all             all             ::1/128                 trust
-  '';
-};
+{pkgs, ...}: {
+    services.postgresql = {
+      enable = true;
+      package = pkgs.postgresql_17;
+      dataDir = "/var/lib/postgresql/data";
+      extensions = with pkgs.postgresql17Packages; [postgis];
+      authentication = ''
+        local   all             all                                     trust
+        host    all             all             127.0.0.1/32            trust
+        host    all             all             ::1/128                 trust
+      '';
+    };
+}
 ```
 You need to create a directory called `data`, and store the .osm.pbf files from all provinces of 
 the Netherlands in there. These files can be downloaded from here: 
