@@ -83,14 +83,14 @@ as, where $p$ and $q$ are locations:
 #+END_EXPORT
 $c$ is greater or equal to 1, a value closer to 1 indicates a more efficient network. This
 circuity factor has been estimated many times for different road networks, with results ranging
-between $1.12$ and $5.60$ [cite:merchan2019empirical]. Then, equation \ref{eq:beardwood} becomes:
-#+NAME: eq:beardwood_circuity
-#+BEGIN_EXPORT latex
-\begin{align}
-	L\to c\beta\sqrt{nA},\text{ as }n\to\infty
-	\label{eq:beardwood_circuity}
-\end{align}
-#+END_EXPORT
+between $1.12$ and $5.60$ [cite:merchan2019empirical]. This is an efficient method of implementing
+the impact of traveling over a road network into the models for solving the TSPs, since the euclidean
+distance can simply be multiplied by a constant. However, this might be an oversimplification of
+reality: this circuity factor might differ strongly from area to area or differ by route length.
+Additionally, the locations used were generated from uniform distribution across the area. This
+might also be unrealistic since population density differs strongly from area to area, especially
+in a city where there is highrise, then the distribution of the delivery locations is clearly not
+uniform.
 * Methodology
 * References
 #+print_bibliography:

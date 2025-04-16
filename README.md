@@ -1,5 +1,5 @@
-In order to run this project you need to have the `postgres` service set up on your system, below 
-is how I did it on my system as an example:
+In order to run this project you need to have the `postgres` service, with the `postgis` extension
+set up on your system, below is how I did it on my system as an example:
 ```nix
 {pkgs, ...}: {
     services.postgresql = {
