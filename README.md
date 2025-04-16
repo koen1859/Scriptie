@@ -1,5 +1,5 @@
-In order to run this project you need to have postgres server set up on your system, below is how 
-I did it on my system as an example:
+In order to run this project you need to have the `postgres` service set up on your system, below 
+is how I did it on my system as an example:
 ```nix
 {pkgs, ...}: {
     services.postgresql = {
@@ -20,5 +20,6 @@ the Netherlands in there. These files can be downloaded from here:
 https://download.geofabrik.de/europe/netherlands.html. If you use Nix package manager and have 
 flakes enabled, you can just run `nix develop` when you are inside the directory and it will 
 download all dependencies. Otherwise, all dependencies are listed in the `flake.nix` file, they 
-can also be downloaded manually. Then, move into the `project` directory and run `python main.py`
-and the entire project will run.
+can also be downloaded manually. First, run the `Create_DB.sh` script. This will create the 
+`postgres` databases for all provinces. Then, move into the `project` directory and run 
+`python main.py` and the entire project will run.
