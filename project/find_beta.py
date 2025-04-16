@@ -38,7 +38,6 @@ def scatterplot(lengths, x, y, b_hat, area, filename):
     plt.legend()
     plt.title("Scatterplot of TSP path lengths with estimated line y = b * sqrt(n * A)")
     plt.savefig(f"plots/{filename}")
-    plt.show()
 
 
 def errorsplot(lengths, x, y, b_hat, area, filename):
@@ -54,4 +53,3 @@ def errorsplot(lengths, x, y, b_hat, area, filename):
     plt.legend()
     plt.title("Scatterplot of TSP path length prediction errors")
     plt.savefig(f"plots/{filename}")
-    plt.show()

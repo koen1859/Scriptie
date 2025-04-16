@@ -45,7 +45,10 @@ def create_tsps(graph, num_runs, num_locations, num_threads, city, dirname):
 
 
 def solve_tsp(parameter_file, dirname):
-    subprocess.run(["LKH", f"{dirname}/{parameter_file}"], check=True)
+    subprocess.run(
+        ["LKH", f"{dirname}/{parameter_file}"], 
+        stdout=subprocess.DEVNULL,
+        check=True)
 
 
 def parrallel_solve_tsps(num_threads, dirname):
