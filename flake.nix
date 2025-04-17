@@ -23,6 +23,8 @@
           numpy
           matplotlib
           folium
+	  geopandas
+	  pycairo
         ]);
     in {
       devShells.default = pkgs.mkShell {
