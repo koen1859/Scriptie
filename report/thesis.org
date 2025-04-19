@@ -67,20 +67,20 @@ elegant result, and it requires very little data. However, its assumptions,
 uniform random locations and euclidean space differ from real-world applications, which are defined
 by complex geographic features, such as road networks.
 
-This research investigates how well this approximation method performs when we consider real road
-networks. Using OpenStreetMap data, we simulate TSP instances in a wide variety of different urban areas
-in the Netherlands, then solve these for the actual shortest paths using the Lin–Kernighan heuristic.
-Then we estimate the $\beta$ from equation \ref{eq:beardwood} and analyze the performance of this
-formula. Additionally, we compare the results for $\beta$ and the performance across the selected
-areas.
+This research investigates how well this approximation method performs when considering real road
+networks. Using OpenStreetMap data, TSP instances are simulated in a wide variety of different urban areas
+in the Netherlands, then solve these for the actual shortest paths using the Lin–Kernighan \cite{lin1973effective} heuristic.
+Then the $\beta$ from equation \ref{eq:beardwood} is estimated and the performance of this
+formula is analyzed. Additionally, the results for $\beta$ and the performance across the selected
+areas is compared.
 
-In section 2 we dive deeper in the context and previous research in this field. Then, in section 3
-we show the methodology ...
+In section 2 a deep dive in the context and previous research in this field is provided.
+In section 3 the methodology is ...
 * Literature Review
-In this section we review the existing literature on the Beardwood formula and some applications,
-and on the Lin-Kernighan heuristic and its implementations.
+In this section the existing literature on the Beardwood formula and some applications,
+and on the Lin-Kernighan heuristic and its implementations is reviewed.
 ** Applications of the Beardwood formula
-We are interested in the performance of formula \ref{eq:beardwood} for
+This research is concerns the performance of formula \ref{eq:beardwood} for
 reasonable amounts of locations a delivery person can visit in a workday, say $10\leq n\leq90$. Table
 \ref{tab:beta-values} lists values for $\beta$ for some values of $n$, where the points were
 generated uniformly and the $L_2$ distance metric was used.
@@ -146,6 +146,13 @@ vary significantly within a single city, depending on local street patterns, inf
 topography. These variations suggest that a fixed circuity factor may oversimplify the complexity
 of real-world delivery contexts, especially when applied to smaller subregions or neighborhoods.
 ** Lin-Kernighan Heuristic
+To be able to efficiently solve many TSPs, to find a good estimate for $\beta$, a fast and reliable
+solution algorithm is needed. The Lin-Kernighan \cite{lin1973effective} heuristic provides outcome, it is generally considered
+to be one of the most effective methods of generating (near) optimal solutions for the TSP. In this
+research a modified implementation of the heuristic is used \cite{helsgaun2000effective}. The run
+times of both heuristics increase by approximately $n^{2.2}$, but the modified heuristic is much
+more effective. It is able to find optimal solutions to large instances in reasonable times
+\cite{helsgaun2000effective}.
 * Methodology
 * References
 #+print_bibliography:
