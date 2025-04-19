@@ -75,7 +75,7 @@ formula is analyzed. Additionally, the results for $\beta$ and the performance a
 areas is compared.
 
 In section 2 a deep dive in the context and previous research in this field is provided.
-In section 3 the methodology is ...
+In section 3 the experimental design is documented.
 * Literature Review
 In this section the existing literature on the Beardwood formula and some applications,
 and on the Lin-Kernighan heuristic and its implementations is reviewed.
@@ -147,13 +147,21 @@ topography. These variations suggest that a fixed circuity factor may oversimpli
 of real-world delivery contexts, especially when applied to smaller subregions or neighborhoods.
 ** Lin-Kernighan Heuristic
 To be able to efficiently solve many TSPs, to find a good estimate for $\beta$, a fast and reliable
-solution algorithm is needed. The Lin-Kernighan \cite{lin1973effective} heuristic provides outcome, it is generally considered
-to be one of the most effective methods of generating (near) optimal solutions for the TSP. In this
-research a modified implementation of the heuristic is used \cite{helsgaun2000effective}. The run
-times of both heuristics increase by approximately $n^{2.2}$, but the modified heuristic is much
-more effective. It is able to find optimal solutions to large instances in reasonable times
+solution algorithm is needed. The Lin-Kernighan \cite{lin1973effective} heuristic provides outcome,
+it is generally considered to be one of the most effective methods of generating (near) optimal
+solutions for the TSP.
+In this research a modified implementation of the heuristic is used \cite{helsgaun2000effective}.
+The run times of both heuristics increase by approximately $n^{2.2}$, but the modified heuristic is
+much more effective. It is able to find optimal solutions to large instances in reasonable times
 \cite{helsgaun2000effective}.
-* Methodology
+
+\underbar{PARAGRAPH ABOUT HOW THE HEURISTIC WORKS}
+* Experimental design
+** Data
+** Generation and solving of TSPs
+* Results
+* Discussion
+* Conclusion
 * References
 #+print_bibliography:
 * Appendix
