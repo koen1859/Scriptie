@@ -80,11 +80,12 @@ In section 3 the experimental design is documented.
 In this section the existing literature on the Beardwood formula and some applications,
 and on the Lin-Kernighan heuristic and its implementations is reviewed.
 ** Applications of the Beardwood formula
-This research is concerns the performance of formula \ref{eq:beardwood} for
-reasonable amounts of locations a delivery person can visit in a workday, say $10\leq n\leq90$. Table
-\ref{tab:beta-values} lists values for $\beta$ for some values of $n$, where the points were
-generated uniformly and the $L_2$ distance metric was used.
-#+LATEX: \begin{table}[htbp]
+This research concerns the performance of formula \ref{eq:beardwood} for
+reasonable amounts of locations a delivery person can visit in a workday, say $10\leq n\leq90$. 
+cite:lei2015dynamic estimates the values of $\beta$ for a selection of values for $n$. 
+In their research, the points were generated uniformly and the $L_2$ distance metric was used.
+Table \ref{tab:beta-values} lists the results.
+   #+LATEX: \begin{table}[htbp]
 	#+LATEX: \centering
 	#+CAPTION: Empirical estimates of $\beta$ as a function of $n$, $20 \leq n \leq 90$ (cite:lei2015dynamic)
 	#+LABEL: tab:beta-values
