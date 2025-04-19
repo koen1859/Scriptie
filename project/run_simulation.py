@@ -8,7 +8,7 @@ from graph import make_graph
 from tsp import create_tsps, parrallel_solve_tsps
 from read_tour import read_tours
 from route import paths_subset
-from find_beta import find_beta, scatterplot, errorsplot
+from find_beta import find_beta, results, scatterplot, errorsplot
 
 
 def run_simulation(DB, neighborhood):
@@ -32,6 +32,7 @@ def run_simulation(DB, neighborhood):
     area = get_area(buildings)
     # paths_subset(graph, nodes, buildings, tours, distances, DB)
     x, y, b_hat, b = find_beta(distances, area)
+    line, errors, MAE = results(distances, x, y, b_hat, area)
     scatterplot(distances, x, y, b_hat, area, f"scatter_{DB}_{neighborhood}")
     errorsplot(distances, x, y, b_hat, area, f"errors_{DB}_{neighborhood}")
-    return b_hat
+    return b_hat, MAE

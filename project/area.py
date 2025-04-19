@@ -26,4 +26,4 @@ def get_area(buildings):
     ).to_crs("EPSG:28992")
     hull = convex_hull(union_all(gdf))
     # plot_area(str(hull))
-    return hull.area / 1000000
+    return hull.area

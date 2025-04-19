@@ -88,19 +88,27 @@ areas = {
         "Oud-Zuid",
     ],
 }
-beta = {}
+final_results = {}
 
 for DB, neighborhoods in areas.items():
     for neighborhood in neighborhoods:
-        b = run_simulation(DB, neighborhood)
-        beta[f"{DB}-{neighborhood}"] = b
+        b, MAE = run_simulation(DB, neighborhood)
+        final_results[f"{DB}-{neighborhood}"] = [b, MAE]
         print(f"beta for {DB} {neighborhood} is: {b}")
+        print(f"MAE for {DB} {neighborhood} is: {MAE}")
 
 with open("beta_values.org", "w") as f:
-    f.write("| Province      | Neighborhood         | Beta      |\n")
-    f.write("|---------------+----------------------+-----------|\n")
+    f.write("#+LATEX: \\begin{table}[htbp]\n")
+    f.write("#+LATEX: \\centering\n")
+    f.write("#+CAPTION: Empirical estimates for $\\beta$, for the selected areas.\n")
+    f.write("#+LABEL: tab:results\n")
+    f.write("| Province      | Neighborhood         | Beta      | MAE      |\n")
+    f.write("|---------------+----------------------+-----------+----------|\n")
 
-    for key, value in beta.items():
+    for key, values in final_results.items():
         db, neighborhood = key.split("-", 1)
         neighborhood = neighborhood.replace("_", " ")
-        f.write(f"| {db:<13} | {neighborhood:<20} | {value:.4f} |\n")
+        db = db.replace("_", " ")
+        f.write(
+            f"| {db:<13} | {neighborhood:<20} | {values[0]:.4f} | {values[1]:.4f} |\n"
+        )
