@@ -16,6 +16,8 @@
 \usepackage{graphicx}
 \usepackage[longnamesfirst]{natbib}
 \usepackage{float}
+\usepackage{longtable}
+\usepackage{caption}
 
 \setlength{\parindent}{0pt}     % No paragraph indentation
 \setlength{\parskip}{1em}       % Add vertical space between paragraphs
@@ -72,6 +74,13 @@
 \clearpage
 \pagenumbering{arabic}
 \pagestyle{plain}
+\begin{center}
+	\LARGE \textbf{Assessment of an approximation method for TSP path length on road networks} \\[1.5ex]
+	\large \textit{Koen Stevens}
+\end{center}
+\begin{abstract}
+
+\end{abstract}
 \section{Introduction}
 The Traveling Salesman Problem (TSP) is an important problem in operations research.
 It is particularly relevant for last-mile carriers and other logistics companies where efficient
@@ -206,10 +215,5 @@ much more effective. It is able to find optimal solutions to large instances in 
 \bibliography{literature}
 \bibliographystyle{rug-econometrics}
 \section{Appendix}
-\begin{table}[H]
-	\centering
-	\caption{Empirical estimates for $\\beta$ in selected neighborhoods.}
-	\label{tab:results}
-	\input{../project/beta_values.tex}
-\end{table}
+\input{../project/beta_values.tex}
 \end{document}
