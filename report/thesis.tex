@@ -1,0 +1,209 @@
+\documentclass[12pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{lmodern}
+\usepackage[english]{babel}
+\usepackage{mathtools,amsthm,amssymb,amsmath}
+\numberwithin{equation}{section}
+\usepackage{booktabs} % For better-looking tables
+\usepackage{dcolumn}  % For aligning decimal points in tables
+\usepackage{bm}
+\usepackage{hyperref}
+\usepackage{ marvosym }
+\usepackage{eurosym}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage[longnamesfirst]{natbib}
+\usepackage{float}
+
+\setlength{\parindent}{0pt}     % No paragraph indentation
+\setlength{\parskip}{1em}       % Add vertical space between paragraphs
+
+\newcommand{\N}[1]{\mathcal{N}\left(#1\right)}
+\newcommand{\Z}{\mathbb{Z}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\newcommand{\abs}[1]{\left\vert#1\right\vert}
+\newcommand{\given}{\,\middle|\,}
+\newcommand{\Bern}[1]{\mathrm{Bern}(#1)}
+\newcommand{\Bin}[1]{\mathrm{Bin}(#1)}
+\newcommand{\Exp}[1]{\mathrm{Exp}(#1)}
+\newcommand{\FS}[1]{\mathrm{FS}(#1)}
+\newcommand{\Geo}[1]{\mathrm{Geo}(#1)}
+\newcommand{\Norm}[1]{\mathrm{Norm}(#1)}
+\newcommand{\Pois}[1]{\mathrm{Pois}(#1)}
+\newcommand{\Unif}[1]{\mathrm{Unif}(#1)}
+\newcommand{\E}[1]{\,\mathsf{E}\left[#1\right]}
+\newcommand{\EE}[2]{\,\mathsf{E}_{#1}\left[#2\right]}
+\newcommand{\V}[1]{\,\mathsf{V}\left[#1\right]}
+\newcommand{\cov}[1]{\,\mathsf{Cov}\left[#1\right]}
+\renewcommand{\d}[1]{\,\textrm{d}#1}
+\newcommand{\1}[1]{\,I_{#1}} % indicator
+\renewcommand{\P}[1]{\,\mathbb{P}\left\{#1\right\}}
+\newcommand{\fat}[1]{\ThisStyle{\hstretch{1.2}{\ooalign{%
+  \kern.46pt$\SavedStyle#1$\cr\kern.33pt$\SavedStyle#1$\cr%
+  \kern.2pt$\SavedStyle#1$\cr$\SavedStyle#1$}}}}
+\renewcommand{\ln}[1]{\,\mathrm{ln}\left[#1\right]}
+\newcommand*{\B}[1]{\ifmmode\bm{#1}\else\textbf{#1}\fi}
+\pagestyle{empty}
+
+\title{Assessment of an approximation method for TSP path length on road networks}
+\author{Koen Stevens}
+\date{\today}
+\begin{document}
+\begin{titlepage}
+	\centering
+	\vspace*{0.3\textheight}
+	{\LARGE\bfseries Assessment of an approximation method for TSP path length on road networks \par}
+	\vspace{2cm}
+	{\Large Koen Stevens \par}
+	\vfill
+	{\large \today \par} % or hardcode the date
+\end{titlepage}
+\clearpage
+\thispagestyle{empty}
+\vspace*{0.3\textheight}
+{\Large Bachelor's Thesis Econometrics \par}
+\vspace{1cm}
+{\large Supervisor: dr. N.D. van Foreest \par}
+\vspace{0.5cm}
+{\large Second assessor:  \par}
+\clearpage
+\pagenumbering{arabic}
+\pagestyle{plain}
+\section{Introduction}
+The Traveling Salesman Problem (TSP) is an important problem in operations research.
+It is particularly relevant for last-mile carriers and other logistics companies where efficient
+routing directly impacts cost, time and service quality. Since the number of parcels worldwide has
+increased between 2013 and 2022 and is expected to keep increasing \cite{statista}, the need for
+fast, scalable route planning methods becomes ever more pressing.
+
+The TSP is an NP-hard problem, it is computationally intensive to find the exact solution for
+large instances. In many real-world scenarios, the exact optimal routes may not be needed, but
+instead a rough, reliable estimate of the optimal route length. For instance, consider a postal delivery company.
+This firm may need to assign a certain amount of deliveries or a certain area to each postman.
+Reliable estimates for the route length can provide valuable information for making such decisions.
+
+Efficient approximation methods provide a solution for such practical applications where exact
+solutions are too computationally intensive to conduct or not feasible due to insufficient data.
+These methods aim at approximating the expected optimal total travel time or distance, while using
+minimal data and computational effort.
+
+There is extensive research on such approximation methods and how they perform in the Euclidean
+plane.
+Consider $n$ uniformly drawn locations from some area in $\mathbb{R}^2$ with area $A$.
+\cite{beardwood1959shortest} prove the relation:
+\begin{align}
+	L \to \beta \sqrt{nA}, \quad \text{as } n \to \infty
+	\label{eq:beardwood}
+\end{align}
+as an estimation for the length of the shortest TSP path measured by Euclidean distance through
+these random locations, where $\beta$ is some proportionality constant. This formula is a very
+elegant result, and it requires very little data. However, its assumptions,
+uniform random locations and euclidean space differ from real-world applications, which are defined
+by complex geographic features, such as road networks.
+
+This research investigates how well this approximation method performs when considering real road
+networks. Using OpenStreetMap data, TSP instances are simulated in a wide variety of different urban areas
+in the Netherlands, then solve these for the actual shortest paths using the Lin–Kernighan \cite{lin1973effective} heuristic.
+Then the $\beta$ from equation \ref{eq:beardwood} is estimated and the performance of this
+formula is analyzed. Additionally, the results for $\beta$ and the performance across the selected
+areas is compared.
+
+In section 2 a deep dive in the context and previous research in this field is provided.
+In section 3 the experimental design is documented.
+\section{Literature Review}
+In this section the existing literature on the Beardwood formula and some applications,
+and on the Lin-Kernighan heuristic and its implementations is reviewed.
+\subsection{Applications of the Beardwood formula}
+This research concerns the performance of formula \ref{eq:beardwood} for reasonable amounts of
+locations a delivery person can visit in a workday, say $10\leq n\leq90$. \cite{lei2015dynamic}
+estimates the values of $\beta$ for a selection of values for $n$.
+In their research, the points were generated uniformly and the $L_2$ distance metric was used.
+Table \ref{tab:beta-values} lists the results.
+\begin{table}[H]
+	\centering
+	\caption{Empirical estimates of $\beta$ as a function of $n$, $20 \leq n \leq 90$\\
+		(\cite{lei2015dynamic})}
+	\label{tab:beta-values}
+	\begin{tabular}{cc}
+		\toprule
+		$n$ & $\beta(n)$ \\
+		\midrule
+		20  & 0.8584265  \\
+		30  & 0.8269698  \\
+		40  & 0.8129900  \\
+		50  & 0.7994125  \\
+		60  & 0.7908632  \\
+		70  & 0.7817751  \\
+		80  & 0.7775367  \\
+		90  & 0.7773827  \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+\cite{figliozzi2008planning} is the first research to apply approximation formulas to real-world
+instances of TSPs (and VRPs (Vehicle Routing Problems)). An extension of formula
+\ref{eq:beardwood} that works for VRPs is assessed in a real-world setting. It is found that this
+model has an $R^2$ of 0.99 and MAPE (Mean Absolute Prediction Error) of 4.2\%. This prediction error
+is slightly higher than when it is applied to a setting where Euclidean distances are considered (3.0\%),
+but the formula still performs well (\cite{figliozzi2008planning}).
+
+\cite{merchan2019empirical} use circuity factors to measure the relative detour incurred for
+traveling in a road network, compared to the Euclidean distance. This circuity factor is defined
+as, where $p$ and $q$ are locations:
+\begin{align}
+	c = \frac{d_{c}(p,q)}{d_{L_{2}}(p,q)}
+	\label{eq:circuity}
+\end{align}
+By construction, $c$ is greater or equal to 1, a value closer to 1 indicates a more efficient network. Then, $\beta_c$
+is estimated by $\beta_c=c\beta$. This value $c$, is estimated for three different areas in
+São Paulo, for which the results are listed in table \ref{tab:beta-merchan}. These values indicate
+real travel distances are on average 2.76 times longer in area 1 compared to the $L_2$ metric.
+These values were obtained by uniformly generating $n$ locations (for $n$ ranging from 3 to 250),
+computing near-optimal tour lengths under the Euclidean metric, and solving for $\beta$, then
+scaling by the empirical circuity factor.
+\begin{table}[htbp]
+	\centering
+	\caption{Estimates of the circuity factor $c$ and its corresponding $\beta_c$ (\cite{merchan2019empirical})}
+	\label{tab:beta-merchan}
+	\begin{tabular}{lccc}
+		\toprule
+		          & Area 1 & Area 2 & Area 3 \\
+		\midrule
+		$c$       & 2.76   & 2.34   & 1.82   \\
+		$\beta_c$ & 2.48   & 2.10   & 1.64   \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+It is important to note, however, that the assumptions in this study may limit the generality of
+the findings. In particular, the use of uniformly distributed locations does not accurately reflect
+the spatial distribution of delivery points in real urban environments, where locations tend to
+cluster in residential, commercial, or industrial zones. Additionally, within small urban areas,
+high-rise buildings and single-family homes may coexist in the same neighborhoods, further
+challenging the assumption of uniformly distributed delivery points.
+Furthermore, the circuity factor $c$ can
+vary significantly within a single city, depending on local street patterns, infrastructure, and
+topography. These variations suggest that a fixed circuity factor may oversimplify the complexity
+of real-world delivery contexts, especially when applied to smaller sub-regions or neighborhoods.
+\subsection{Lin-Kernighan Heuristic}
+To be able to efficiently solve many TSPs, to find a good estimate for $\beta$, a fast and reliable
+solution algorithm is needed. The Lin-Kernighan \cite{lin1973effective} heuristic provides outcome,
+it is generally considered to be one of the most effective methods of generating (near) optimal
+solutions for the TSP.
+In this research a modified implementation of the heuristic is used \cite{helsgaun2000effective}.
+The run times of both heuristics increase by approximately $n^{2.2}$, but the modified heuristic is
+much more effective. It is able to find optimal solutions to large instances in reasonable times
+\cite{helsgaun2000effective}.
+
+\underbar{PARAGRAPH ABOUT HOW THE HEURISTIC WORKS}
+\section{Experimental design}
+\subsection{Data}
+\subsection{Generation and solving of TSPs}
+\section{Results}
+\section{Discussion}
+\section{Conclusion}
+\bibliography{literature}
+\bibliographystyle{rug-econometrics}
+\section{Appendix}
+\end{document}
