@@ -97,18 +97,17 @@ for DB, neighborhoods in areas.items():
         print(f"beta for {DB} {neighborhood} is: {b}")
         print(f"MAE for {DB} {neighborhood} is: {MAE}")
 
-with open("beta_values.org", "w") as f:
-    f.write("#+LATEX: \\begin{table}[htbp]\n")
-    f.write("#+LATEX: \\centering\n")
-    f.write("#+CAPTION: Empirical estimates for $\\beta$, for the selected areas.\n")
-    f.write("#+LABEL: tab:results\n")
-    f.write("| Province      | Neighborhood         | Beta      | MAE      |\n")
-    f.write("|---------------+----------------------+-----------+----------|\n")
+with open("beta_values.tex", "w") as f:
+    f.write("\\begin{tabular}{llcc}\n")
+    f.write("\\toprule\n")
+    f.write("Province & Neighborhood & $\\beta$ & MAE \\\\\n")
+    f.write("\\midrule\n")
 
     for key, values in final_results.items():
         db, neighborhood = key.split("-", 1)
         neighborhood = neighborhood.replace("_", " ")
         db = db.replace("_", " ")
-        f.write(
-            f"| {db:<13} | {neighborhood:<20} | {values[0]:.4f} | {values[1]:.4f} |\n"
-        )
+        f.write(f"{db} & {neighborhood} & {values[0]:.4f} & {values[1]:.4f} \\\\\n")
+
+    f.write("\\bottomrule\n")
+    f.write("\\end{tabular}\n")

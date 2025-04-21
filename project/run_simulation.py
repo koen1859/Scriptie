@@ -26,7 +26,7 @@ def run_simulation(DB, neighborhood):
     print(
         f"Graph has {len(graph.vs)} vertices and {len(graph.es)} edges. It contains {len(graph.components())} component(s)."
     )
-    create_tsps(graph, 10, range(10, 90, 1), 100, "Any", f"tsps_{DB}_{neighborhood}")
+    create_tsps(graph, 50, range(20, 90, 1), 100, "Any", f"tsps_{DB}_{neighborhood}")
     parrallel_solve_tsps(19, f"tsps_{DB}_{neighborhood}")
     tours, distances = read_tours(f"tsps_{DB}_{neighborhood}")
     area = get_area(buildings)
