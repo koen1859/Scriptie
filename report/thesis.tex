@@ -84,7 +84,7 @@
 The Traveling Salesman Problem (TSP) is an important problem in operations research.
 It is particularly relevant for last-mile carriers and other logistics companies where efficient
 routing directly impacts cost, time and service quality. Since the number of parcels worldwide has
-increased between 2013 and 2022 and is expected to keep increasing \citet{statista}, the need for
+increased between 2013 and 2022 and is expected to keep increasing \citep{statista}, the need for
 fast, scalable route planning methods becomes ever more pressing.
 
 The TSP is an NP-hard problem, it is computationally intensive to find the exact solution for
@@ -114,8 +114,9 @@ by complex geographic features, such as road networks.
 
 This research investigates how well this approximation method performs when considering real road
 networks. Using OpenStreetMap data, TSP instances are simulated in a wide variety of different urban areas
-in the Netherlands, then solve these for the actual shortest paths using the Lin–Kernighan \citet{lin1973effective} heuristic.
-Then the $\beta$ from equation \ref{eq:beardwood} is estimated and the performance of this
+in the Netherlands, then solve these for the actual shortest paths using the Lin–Kernighan heuristic
+\citep{lin1973effective}.
+Then, the $\beta$ from equation \ref{eq:beardwood} is estimated and the performance of this
 formula is analyzed. Additionally, the results for $\beta$ and the performance across the selected
 areas is compared.
 
@@ -155,7 +156,7 @@ instances of TSPs (and VRPs (Vehicle Routing Problems)). An extension of formula
 \ref{eq:beardwood} that works for VRPs is assessed in a real-world setting. It is found that this
 model has an $R^2$ of 0.99 and MAPE (Mean Absolute Prediction Error) of 4.2\%. This prediction error
 is slightly higher than when it is applied to a setting where Euclidean distances are considered (3.0\%),
-but the formula still performs well (\citet{figliozzi2008planning}).
+but the formula still performs well \citep{figliozzi2008planning}.
 
 \citet{merchan2019empirical} use circuity factors to measure the relative detour incurred for
 traveling in a road network, compared to the Euclidean distance. This circuity factor is defined
@@ -173,7 +174,7 @@ computing near-optimal tour lengths under the Euclidean metric, and solving for 
 scaling by the empirical circuity factor.
 \begin{table}[htbp]
 	\centering
-	\caption{Estimates of the circuity factor $c$ and its corresponding $\beta_c$ (\citet{merchan2019empirical})}
+	\caption{Estimates of the circuity factor $c$ and its corresponding $\beta_c$ \citep{merchan2019empirical}}
 	\label{tab:beta-merchan}
 	\begin{tabular}{lccc}
 		\toprule
@@ -196,13 +197,13 @@ topography. These variations suggest that a fixed circuity factor may oversimpli
 of real-world delivery contexts, especially when applied to smaller sub-regions or neighborhoods.
 \subsection{Lin-Kernighan Heuristic}
 To be able to efficiently solve many TSPs, to find a good estimate for $\beta$, a fast and reliable
-solution algorithm is needed. The Lin-Kernighan \citet{lin1973effective} heuristic provides outcome,
+solution algorithm is needed. The Lin-Kernighan \citep{lin1973effective} heuristic provides outcome,
 it is generally considered to be one of the most effective methods of generating (near) optimal
 solutions for the TSP.
-In this research a modified implementation of the heuristic is used \citet{helsgaun2000effective}.
+In this research a modified implementation of the heuristic is used \citep{helsgaun2000effective}.
 The run times of both heuristics increase by approximately $n^{2.2}$, but the modified heuristic is
 much more effective. It is able to find optimal solutions to large instances in reasonable times
-\citet{helsgaun2000effective}.
+\citep{helsgaun2000effective}.
 
 \underbar{PARAGRAPH ABOUT HOW THE HEURISTIC WORKS}
 \section{Experimental design}

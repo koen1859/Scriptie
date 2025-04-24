@@ -1,12 +1,8 @@
 import folium
 import os
 
-
-def create_map(
-    roads: list[tuple[int, list[int], list[float], list[float], str]],
-    filename: str,
-    buildings,
-):
+# This function creates a map of the roads that were imported from the postgres database.
+def create_map(roads, filename, buildings):
     os.makedirs("maps", exist_ok=True)
     m = folium.Map(location=[53.2194, 6.5665], zoom_start=12)
 

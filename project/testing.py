@@ -11,6 +11,7 @@ from route import paths_subset
 from find_beta import find_beta, results, scatterplot, errorsplot
 from map import create_map
 
+# This is just a file i made to test some things before but it will probably return error now
 roads = get_road_data("groningen", "Binnenstad")
 print(f"{len(roads)} roads imported.")
 building_data = get_addresses("groningen", "Binnenstad")

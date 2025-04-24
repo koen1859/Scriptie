@@ -3,6 +3,9 @@ import os
 import re
 
 
+# This function reads the .txt files (the solved tsps paths) and the .json files
+# (to map the indices that LKH uses back to the indices that we use), to extract the
+# paths and their lengths
 def read_tours(dirname):
     tour_files = sorted([f for f in os.listdir(f"{dirname}/") if f.endswith(".txt")])
     json_files = sorted([f for f in os.listdir(f"{dirname}/") if f.endswith(".json")])

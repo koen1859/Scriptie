@@ -1,8 +1,10 @@
-def get_buildings(
-    building_data: list[tuple[int, float, float, str]],
-) -> tuple[dict[str, tuple[float, float]], dict[str, str]]:
-    buildings: dict[str, tuple[float, float]] = {}
-    building_city: dict[str, str] = {}
+# This function converts the data imported from postgresql into dictionaries,
+# with as index the building id and as value the coordinates
+# Note that we use a string instead of an int as id since these integers are too large
+# so igraph doesnt want these numbers as atttribute to a node, so we convert to a string.
+def get_buildings(building_data):
+    buildings = {}
+    building_city = {}
     for id, lat, lon, city in building_data:
         buildings[str(id)] = (lat, lon)
         building_city[str(id)] = city

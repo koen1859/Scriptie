@@ -2,6 +2,12 @@ import psycopg2
 from config import DB_HOST, DB_PORT, DB_USER
 
 
+# This function imports the roads from the database. It works as follows:
+# we fetch a quarter from the polygon table, fetch all roads that satisfy a set of types
+# and that are either: fully contained in the polygon, or partly in and partly outside of
+# the polygon (i.e.  intersects the boundary). In this case we still fetch that entire road,
+# also the parts that are not in the neighborhood. This is done because otherwise there are
+# some edge cases where connections are missed that should have been there.
 def get_road_data(DB, neighborhood):
     connection = psycopg2.connect(dbname=DB, user=DB_USER, host=DB_HOST, port=DB_PORT)
     cursor = connection.cursor()
@@ -56,6 +62,10 @@ def get_road_data(DB, neighborhood):
     return roads
 
 
+# This function fetches all buildings from the postgres database that are inside the quarter.
+# This is easier than importing the roads, since a node is either in or not in the area,
+# so we can just say ST_Within instead of having to make a new object to also fetch the
+# buildings that intersect the boundary (these do not exist).
 def get_addresses(DB, neighborhood):
     connection = psycopg2.connect(dbname=DB, user=DB_USER, host=DB_HOST, port=DB_PORT)
     cursor = connection.cursor()
@@ -92,6 +102,10 @@ def get_addresses(DB, neighborhood):
     return addresses
 
 
+# This function is not used. This function fetches the area of a quarter from the database,
+# however this area overestimates the area that we need, since the quarters sometimes contain
+# parks or lakes, or the buildings are only in a small part of the quarter. We need the area
+# of the convex hull around the buildings, as calculated in area.py
 def get_area(DB, neighborhood):
     connection = psycopg2.connect(dbname=DB, user=DB_USER, host=DB_HOST, port=DB_PORT)
     cursor = connection.cursor()
