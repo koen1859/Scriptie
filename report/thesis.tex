@@ -113,12 +113,23 @@ uniform random locations and euclidean space differ from real-world applications
 by complex geographic features, such as road networks.
 
 This research investigates how well this approximation method performs when considering real road
-networks. Using OpenStreetMap data, TSP instances are simulated in a wide variety of different urban areas
+networks. Using OpenStreetMap \citep{openstreetmap} data, TSP instances are simulated in a wide variety of different urban areas
 in the Netherlands, then solve these for the actual shortest paths using the Lin–Kernighan heuristic
 \citep{lin1973effective}.
 Then, the $\beta$ from equation \ref{eq:beardwood} is estimated and the performance of this
 formula is analyzed. Additionally, the results for $\beta$ and the performance across the selected
-areas is compared.
+areas is compared. 
+
+The core contribution of this research is the performance of the Beardwood formula is analyzed when: 
+\begin{enumerate}
+  \item relaxing the assumption of uniformly drawn locations. In this research,
+	the locations are drawn from the set of postcodes in the area in question.
+  \item applied to realistically sized real-world parts of cities and villages in the Netherlands.
+\end{enumerate}
+The analysis can easily be extended to any type of area in any part of the world, one would only
+have to download the OpenStreetMap \citep{openstreetmap} for another part of the world and add the names of the areas
+to apply it to. The source code of this project is available on 
+\href{https://github.com/koen1859/Scriptie}{GitHub}.
 
 In section 2 a deep dive in the context and previous research in this field is provided.
 In section 3 the experimental design is documented.
@@ -207,7 +218,27 @@ much more effective. It is able to find optimal solutions to large instances in 
 
 \underbar{PARAGRAPH ABOUT HOW THE HEURISTIC WORKS}
 \section{Experimental design}
+In this section, a detailed explanation of the methodology is provided. This includes the 
+characteristics of the data used, as well as the approach taken to generate and solve TSP instances.
 \subsection{Data}
+In order to model the complex nature of real road networks, data from OpenStreetMap \citep{openstreetmap} is used. 
+OpenStreetMap is an open-source project that provides geographic data, including accurate and 
+detailed information about roads, buildings and natural features around the world. The data is 
+continuously maintained and updated by a large community of users, making it a valuable resource 
+for this research.
+
+This data can be downloaded from Geofabrik, and then exported to a \url{PostgreSQL} database using
+\url{osm2pgsql} \citep{osm2pgsql}, in order to be able to efficiently use the data with \url{Python}. 
+For the analysis, the information about roads, buildings (postcodes) and pre-defined polygons is used.
+
+A large number of neighborhoods multiple towns and villages in the Netherlands have such a polygon 
+defined. In OpenStreetMap a polygon is a closed shape formed by a set of geographic coordinates 
+(nodes) that are connected by lines (ways). These objects can be used to define boundaries of
+geographic areas, such as lakes, parks, nature reserves and parts of cities and villages. In this
+research the polygons are used to filter the buildings and roads only in a certain area efficiently.
+
+From this raw data, a graph is constructed, using the \url{igraph} module in \url{Python},
+connecting all buildings to each other via the road network.
 \subsection{Generation and solving of TSPs}
 \section{Results}
 \section{Discussion}
