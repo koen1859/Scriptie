@@ -17,15 +17,20 @@ def get_road_data(DB, neighborhood):
             SELECT ST_Transform(way, 4326) AS geom
             FROM planet_osm_polygon
             WHERE place = 'quarter'
-            AND name = '{neighborhood}'
+              AND name = '{neighborhood}'
         ),
         road_geometries AS (
             SELECT
                 w.id AS road_id,
                 w.nodes AS node_ids,
-                w.tags->>'oneway' AS oneway
-            FROM planet_osm_ways w,
-                 neighborhood nb
+                w.tags->>'oneway' AS oneway,
+                ST_MakeLine(ARRAY(
+                    SELECT ST_SetSRID(ST_MakePoint(n.lon / 1e7, n.lat / 1e7), 4326)
+                    FROM unnest(w.nodes) WITH ORDINALITY AS u(node_id, ordinality)
+                    JOIN planet_osm_nodes n ON n.id = u.node_id
+                    ORDER BY u.ordinality
+                )) AS road_geom
+            FROM planet_osm_ways w
             WHERE w.tags->>'highway' IN (
                 'trunk', 'rest_area', 'track', 'bridleway', 'disused', 'service', 'secondary_link',
                 'services', 'raceway', 'emergency_access_point', 'tertiary', 'primary', 'secondary',
@@ -33,28 +38,25 @@ def get_road_data(DB, neighborhood):
                 'corridor', 'primary_link', 'residential', 'trunk_link', 'bus_stop', 'trailhead',
                 'living_street', 'unclassified', 'proposed'
             )
-            AND ST_Intersects(
-                ST_MakeLine(ARRAY(
-                    SELECT ST_SetSRID(ST_MakePoint(n.lon / 1e7, n.lat / 1e7), 4326)
-                    FROM unnest(w.nodes) WITH ORDINALITY AS u(node_id, ordinality)
-                    JOIN planet_osm_nodes n ON n.id = u.node_id
-                    ORDER BY u.ordinality
-                )),
-                nb.geom
-            )
+        ),
+        filtered_roads AS (
+            SELECT rg.*
+            FROM road_geometries rg, neighborhood nb
+            WHERE
+                ST_Intersects(rg.road_geom, ST_Buffer(nb.geom, 0.0001))
         )
         SELECT
-            rg.road_id,
+            fr.road_id,
             array_agg(n.id ORDER BY u.ordinality) AS node_ids,
             array_agg(n.lat / 1e7) AS node_lats,
             array_agg(n.lon / 1e7) AS node_lons,
-            rg.oneway
-        FROM road_geometries rg
-        JOIN planet_osm_ways w ON rg.road_id = w.id
+            fr.oneway
+        FROM filtered_roads fr
+        JOIN planet_osm_ways w ON fr.road_id = w.id
         JOIN LATERAL unnest(w.nodes) WITH ORDINALITY AS u(node_id, ordinality) ON true
         JOIN planet_osm_nodes n ON n.id = u.node_id
-        GROUP BY rg.road_id, rg.oneway;
-        """
+        GROUP BY fr.road_id, fr.oneway;
+    """
     )
     roads = cursor.fetchall()
     cursor.close()
