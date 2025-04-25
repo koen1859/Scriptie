@@ -13,7 +13,7 @@ from sample import sample
 # indices since LKH can only use indices starting from 1 but we already have building indices
 # from openstreetmap.
 def generate_tsp(graph, i, run, city, dirname):
-    locations = sample(graph, i, city)
+    locations = sample(graph, i)
     distances = distance_dict(graph, locations)
     index_to_location = {idx + 1: loc for idx, loc in enumerate(locations)}
 

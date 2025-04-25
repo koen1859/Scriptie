@@ -32,10 +32,10 @@ def get_road_data(DB, neighborhood):
                 )) AS road_geom
             FROM planet_osm_ways w
             WHERE w.tags->>'highway' IN (
-                'trunk', 'rest_area', 'track', 'bridleway', 'disused', 'service', 'secondary_link',
-                'services', 'raceway', 'emergency_access_point', 'tertiary', 'primary', 'secondary',
-                'tertiary_link', 'road', 'motorway', 'motorway_link', 'platform', 'construction',
-                'corridor', 'primary_link', 'residential', 'trunk_link', 'bus_stop', 'trailhead',
+                'trunk', 'rest_area', 'service', 'secondary_link',
+                'services', 'tertiary', 'primary', 'secondary',
+                'tertiary_link', 'road', 'motorway', 'motorway_link', 
+                'corridor', 'primary_link', 'residential', 'trunk_link', 
                 'living_street', 'unclassified', 'proposed'
             )
         ),

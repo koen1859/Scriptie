@@ -12,21 +12,24 @@ from find_beta import find_beta, results, scatterplot, errorsplot
 from map import create_map
 
 # This is just a file i made to test some things before but it will probably return error now
-roads = get_road_data("groningen", "Rivierenbuurt")
+roads = get_road_data("noord_holland", "Schinkelbuurt")
 print(f"{len(roads)} roads imported.")
-building_data = get_addresses("groningen", "Rivierenbuurt")
+building_data = get_addresses("noord_holland", "Schinkelbuurt")
 buildings, building_DB = get_buildings(building_data)
 print(f"{len(buildings)} buildings imported.")
-create_map(roads, f"{"groningen"}_{"Rivierenbuurt"}.html", buildings)
+create_map(roads, f"{"noord_holland"}_{"Schinkelbuurt"}.html", buildings)
 nodes = get_nodes(roads)
 print(f"{len(nodes)} nodes extracted.")
 edges, weights = get_edges(roads, nodes, buildings)
 print(f"{len(edges)} edges extracted.")
-graph = make_graph(nodes, buildings, building_DB, edges, weights)
+graph = make_graph(nodes, buildings, edges, weights)
 area = get_area(buildings)
-tours, lengths = read_tours("tsps_groningen_Rivierenbuurt")
+tours, lengths = read_tours("tsps_noord_holland_Schinkelbuurt")
+paths_subset(graph, nodes, buildings, tours, lengths, "noord_holland_Schinkelbuurt")
 x, y, b_hat, b_hat_n = find_beta(lengths, area)
-line, errors, MAE = results(lengths, x, y, b_hat, area)
-scatterplot(lengths, x, y, b_hat, area, "scatter_groningen_Rivierenbuurt")
-errorsplot(lengths, x, y, b_hat, area, "errors_groningen_Rivierenbuurt")
-print(MAE)
+line, errors, MAE = results(lengths, x, y, b_hat_n, area)
+print(
+    f"""MAE: {MAE}\n
+Beta: {b_hat}
+Beta(n): {b_hat_n}"""
+)

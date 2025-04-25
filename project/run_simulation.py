@@ -20,19 +20,20 @@ def write_tsps(DB, neighborhood):
     building_data = get_addresses(DB, neighborhood)
     buildings, building_DB = get_buildings(building_data)
     print(f"{len(buildings)} buildings imported.")
-    # create_map(roads, f"{DB}_{neighborhood}.html", buildings)
+    create_map(roads, f"{DB}_{neighborhood}.html", buildings)
     nodes = get_nodes(roads)
     print(f"{len(nodes)} nodes extracted.")
     edges, weights = get_edges(roads, nodes, buildings)
     print(f"{len(edges)} edges extracted.")
     graph = make_graph(nodes, buildings, edges, weights)
     print(
-        f"Graph has {len(graph.vs)} vertices and {len(graph.es)} edges. It contains {len(graph.components())} component(s)."
+        f"""Graph has {len(graph.vs)} vertices and {len(graph.es)} edges.\n
+        It contains {len(graph.components())} component(s)."""
     )
-    # We set num_cores to 100 here since the creation of tsps doesnt use that much CPU, but a
+    # We set num_cores to 28 here since the creation of tsps doesnt use that much CPU, but a
     # lot of disk I/O so it is a lot faster to have a lot more processes than threads
     # each thread can easily do a lot more than 1 at the time.
-    create_tsps(graph, 100, range(20, 90, 2), 100, "Any", f"tsps_{DB}_{neighborhood}")
+    create_tsps(graph, 100, range(20, 90, 2), 28, "Any", f"tsps_{DB}_{neighborhood}")
 
 
 # This function runs LKH to solve the tsps we made before, and it analyzes the results

@@ -4,6 +4,7 @@ from areas import areas
 
 for DB, neighborhoods in areas.items():
     for neighborhood in neighborhoods:
+        print(f"Generating TSPS for {DB} {neighborhood}")
         write_tsps(DB, neighborhood)
 
 final_results = {}
