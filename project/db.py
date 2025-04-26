@@ -13,12 +13,15 @@ def get_road_data(DB, neighborhood):
     cursor = connection.cursor()
     cursor.execute(
         f"""
+        -- First, get the neighborhood polygon, in the coordinate format we need.
         WITH neighborhood AS (
             SELECT ST_Transform(way, 4326) AS geom
             FROM planet_osm_polygon
             WHERE place = 'quarter'
               AND name = '{neighborhood}'
         ),
+        -- Then, define the road geometries in a way that we can filter based 
+        -- on whether they are inside the neighborhood.
         road_geometries AS (
             SELECT
                 w.id AS road_id,
@@ -31,6 +34,7 @@ def get_road_data(DB, neighborhood):
                     ORDER BY u.ordinality
                 )) AS road_geom
             FROM planet_osm_ways w
+            -- Also filter based on the road type.
             WHERE w.tags->>'highway' IN (
                 'trunk', 'rest_area', 'service', 'secondary_link',
                 'services', 'tertiary', 'primary', 'secondary',
@@ -39,12 +43,14 @@ def get_road_data(DB, neighborhood):
                 'living_street', 'unclassified', 'proposed'
             )
         ),
+        -- Filter on whether the roads are at least partly in the neighborhood.
         filtered_roads AS (
             SELECT rg.*
             FROM road_geometries rg, neighborhood nb
             WHERE
                 ST_Intersects(rg.road_geom, ST_Buffer(nb.geom, 0.0001))
         )
+        -- Select the attributes that are needed.
         SELECT
             fr.road_id,
             array_agg(n.id ORDER BY u.ordinality) AS node_ids,

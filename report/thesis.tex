@@ -17,6 +17,26 @@
 \usepackage{float}
 \usepackage{longtable}
 \usepackage{caption}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\lstdefinelanguage{SQL}{
+    keywords={SELECT, FROM, WHERE, INSERT, INTO, UPDATE, DELETE, CREATE, TABLE, ALTER, DROP, JOIN, ON, AND, OR, NOT, NULL, PRIMARY, KEY},
+    keywordstyle=\color{blue}\bfseries,
+    comment=[l]{--},
+    commentstyle=\color{gray}\ttfamily,
+    stringstyle=\color{red},
+    morestring=[b]',
+    morestring=[b]"
+}
+
+\lstset{
+    basicstyle=\ttfamily,
+    columns=fullflexible,
+    language=SQL,
+    frame=single,
+    backgroundcolor=\color{gray!10}
+}
 
 \setlength{\parindent}{0pt}     % No paragraph indentation
 \setlength{\parskip}{1em}       % Add vertical space between paragraphs
@@ -229,22 +249,119 @@ for this research.
 
 This data can be downloaded from Geofabrik, and then exported to a \url{PostgreSQL} database using
 \url{osm2pgsql} \citep{osm2pgsql}, in order to be able to efficiently use the data with \url{Python}. 
-For the analysis, the information about roads, buildings (postcodes) and pre-defined polygons is used.
+For this analysis, the database has three interesting tables: 
+\url{planet_osm_polygon}, \url{planet_osm_nodes} and \url{planet_osm_ways}.
 
-A large number of neighborhoods multiple towns and villages in the Netherlands have such a polygon 
-defined. In OpenStreetMap a polygon is a closed shape formed by a set of geographic coordinates 
-(nodes) that are connected by lines (ways). These objects can be used to define boundaries of
+A large number of neighborhoods multiple towns and villages in the Netherlands have a polygon 
+defined in the data. In OpenStreetMap a polygon is a closed shape formed by a set of geographic coordinates 
+(\url{nodes}) that are connected by lines (\url{ways}). These objects can be used to define boundaries of
 geographic areas, such as lakes, parks, nature reserves and parts of cities and villages. In this
 research the polygons are used to filter the buildings and roads only in a certain area efficiently.
+These polygons are stored in \url{planet_osm_polygon}.
 
-From this raw data, a graph is constructed, using the \url{igraph} module in \url{Python},
-connecting all buildings to each other via the road network.
-\subsection{Generation and solving of TSPs}
+In the database, the roads are defined as \url{ways}. These ways have three
+attributes: id, nodes and tags. In the \url{tags}, a large amount of 
+information about the way is stored, for instance whether it is a 
+one-way road, or the type of road that it is, i.e. primary, or trunk.
+The information about the roads that are needed for this analysis is the
+road id, the ids of the nodes the road consists of, the coordinates
+(Latitude, Longitude) of these nodes, and whether the road is a one-way
+road.
+
+The buildings are stored as \url{nodes}. In this table (\url{planet_osm_nodes}),
+a large amount of other objects are stored as well. For this analysis,
+the potential delivery locations need to be extracted. Some of these 
+nodes have a postcode defined, which can be used to extract all buildings
+that a potential delivery could take place. This way, for example a little shed in 
+someones backyard is also filtered out, since this does not have its own 
+postcode. For this research only the node id and the coordinates are
+needed.
+
+In listing \ref{lst:sql-roads} (Appendix), the query that is used to extract
+all roads in an area is listed. This query is used inside an \url{f-string}
+in \url{Python}, to be able to loop over the different areas and extract
+the roads from it. Note that a buffer of a few meters around the neighborhood
+is used for the filtering, since otherwise this results in edge cases,
+where a road is ever so slightly more to the outside of the area than the boundary,
+and it would get left out. \url{ST_Intersects} is used to extract all roads
+that are at least partly inside or on the boundary. A similar query is used 
+to extract the nodes, but this is easier since for a building which is only
+defined by a single node, it is not needed to define a new geometry object.
+
+One of the predictors of the TSP path length, is the area of the neighborhood
+the locations are drawn from. The OSM data provides the area of the polygons,
+but this value can not be used to predict TSP path length effectively.
+This value is a heavy overestimation of the correct value for $A$.
+In many cases, there are parts of the neighborhood that do not contain
+any buildings, for instance when there is a park in the neighborhood. To
+account for this, the value for $A$ that is used, is the area of the convex
+hull around all buildings, which is calculated using the \url{shapely}
+module in \url{Python}.
+\subsection{Generating and solving of TSPs}
+Using the geographic information of the roads and buildings, a graph
+is constructed, using the \url{igraph} module in \url{Python}. This graph
+connects all buildings to each other over the road network.
 \section{Results}
 \section{Discussion}
 \section{Conclusion}
 \bibliography{literature}
 \bibliographystyle{rug-econometrics}
 \section{Appendix}
+\begin{lstlisting}[caption={The query to extract roads inside a neighborhood.}, label={lst:sql-roads}]
+-- First, get the neighborhood polygon, in the coordinate format we need.
+WITH neighborhood AS (
+    SELECT ST_Transform(way, 4326) AS geom
+    FROM planet_osm_polygon
+    WHERE place = 'quarter'
+      AND name = '{neighborhood}'
+),
+-- Then, define the road geometries in a way that we can filter based 
+-- on whether they are inside the neighborhood.
+road_geometries AS (
+    SELECT
+	w.id AS road_id,
+	w.nodes AS node_ids,
+	w.tags->>'oneway' AS oneway,
+	ST_MakeLine(ARRAY(
+	    SELECT ST_SetSRID(
+		ST_MakePoint(n.lon / 1e7, n.lat / 1e7), 4326
+		)
+	    FROM unnest(w.nodes) WITH ORDINALITY AS u(node_id, ordinality)
+	    JOIN planet_osm_nodes n ON n.id = u.node_id
+	    ORDER BY u.ordinality
+	)) AS road_geom
+    FROM planet_osm_ways w
+    -- Also filter based on the road type.
+    WHERE w.tags->>'highway' IN (
+	'trunk', 'rest_area', 'service', 'secondary_link',
+	'services', 'tertiary', 'primary', 'secondary',
+	'tertiary_link', 'road', 'motorway', 'motorway_link', 
+	'corridor', 'primary_link', 'residential', 'trunk_link', 
+	'living_street', 'unclassified', 'proposed'
+    )
+),
+-- Filter on whether the roads are at least partly in the neighborhood.
+filtered_roads AS (
+    SELECT rg.*
+    FROM road_geometries rg, neighborhood nb
+    WHERE
+	ST_Intersects(rg.road_geom, ST_Buffer(nb.geom, 0.0001))
+)
+-- Select the attributes that are needed.
+SELECT
+    fr.road_id,
+    array_agg(n.id ORDER BY u.ordinality) AS node_ids,
+    array_agg(n.lat / 1e7) AS node_lats,
+    array_agg(n.lon / 1e7) AS node_lons,
+    fr.oneway
+FROM filtered_roads fr
+JOIN planet_osm_ways w ON fr.road_id = w.id
+JOIN LATERAL unnest(w.nodes) 
+    WITH ORDINALITY 
+    AS u(node_id, ordinality) 
+    ON true
+JOIN planet_osm_nodes n ON n.id = u.node_id
+GROUP BY fr.road_id, fr.oneway;
+\end{lstlisting}
 \input{../project/beta_values.tex}
 \end{document}
