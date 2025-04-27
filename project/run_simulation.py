@@ -30,7 +30,7 @@ def write_tsps(DB, neighborhood):
         It contains {len(graph.components())} component(s)."""
     )
     create_map(nodes, buildings, graph, f"{DB}_{neighborhood}.html")
-    # create_tsps(graph, 100, range(20, 90, 2), "Any", f"tsps_{DB}_{neighborhood}")
+    create_tsps(graph, 100, range(20, 90, 2), "Any", f"tsps_{DB}_{neighborhood}")
 
 
 # This function runs LKH to solve the tsps we made before, and it analyzes the results
