@@ -72,6 +72,7 @@
 \renewcommand{\d}[1]{\,\textrm{d}#1}
 \newcommand{\1}[1]{\,I_{#1}} % indicator
 \renewcommand{\P}[1]{\,\mathbb{P}\left\{#1\right\}}
+\renewcommand{\cos}[1]{\text{cos}\left[#1\right]}
 \newcommand{\fat}[1]{\ThisStyle{\hstretch{1.2}{\ooalign{%
   \kern.46pt$\SavedStyle#1$\cr\kern.33pt$\SavedStyle#1$\cr%
   \kern.2pt$\SavedStyle#1$\cr$\SavedStyle#1$}}}}
@@ -340,8 +341,33 @@ the closest point on the closest road is found, using the shapely implementation
 which splits this existing edge in two parts. The road is reconnected with the new node in between.
 Finally, the building is connected to this new node.
 
-The edges in the graph
-\subsection{Generating and solving of TSPs}
+In order to find the shortest path in terms of real distance, and to calculate the length of the 
+TSP path, a 'weight' needs to be added. This weight represents the length of this edge in meters.
+The equirectangular approximation is used to calculate these weights. This approximation is very
+efficient, but only works when the points the distance is calculated between is small enough such
+that the rounding of the earth does not have a significant effect on the true distance.
+The nodes are all close enough together, so the effect of the 
+rounding of earth's surface is negligible. Let $A$ and $B$ be two nodes,
+and $(x_A,y_A)$, $(x_B),y_B)$ be their coordinates, in \url{radians}. Let $R=6,371,000$ meters, 
+Earth's radius. Then the distance between these nodes (the weight of the edge connecting them),
+using the equirectangular approximation is:
+\begin{align}
+  \label{eq:equirectangluar_approx}
+  d(A,B)	&=R\sqrt{x^2+y^2},\\
+  \text{where }x&=(x_B-x_A)\cos{\frac{y_A+y_B}{2}},\\
+  \text{and }y	&=y_B-y_A.
+\end{align}
+
+Using the \url{folium} module in \url{Python}, such a graph can be projected back onto the world map.
+One of such visualizations is provided in figure \ref{fig:overtoomse_sluis}. All maps like this one
+can be viewed and interacted with via this 
+\href{https://koenstevens.nl/wp-content/uploads/maps/}{\url{webpage}}.
+\begin{figure}[H]
+  \caption{Visualization of the graph, for the Overtoomse Sluis quarter in Amsterdam.}
+  \label{fig:overtoomse_sluis}
+  \includegraphics[width=\textwidth]{Pictures/Overtoomse_Sluis_roads.png}
+\end{figure}
+\subsection{Generating and solving TSPs}
 \section{Results}
 \section{Discussion}
 \section{Conclusion}
