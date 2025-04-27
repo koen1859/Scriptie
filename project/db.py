@@ -48,7 +48,7 @@ def get_road_data(DB, neighborhood):
             SELECT rg.*
             FROM road_geometries rg, neighborhood nb
             WHERE
-                ST_Intersects(rg.road_geom, ST_Buffer(nb.geom, 0.0001))
+                ST_Intersects(rg.road_geom, ST_Buffer(nb.geom, 0.001))
         )
         -- Select the attributes that are needed.
         SELECT

@@ -27,10 +27,10 @@ def find_beta(lengths, area):
 
 # Here we make the line that relates the estimated tsp path length to n, the prediction errors
 # to later plot these results and calculate the mean absolute prediction error.
-def results(lengths, x, y, b_hat_n, area):
+def results(lengths, x, y, b_hat, area):
     sorted_keys = sorted(lengths.keys())
-    # line = [b_hat * math.sqrt(n * area) for n in sorted_keys]
-    line = [b_hat_n[n] * math.sqrt(n * area) for n in sorted_keys]
+    line = [b_hat * math.sqrt(n * area) for n in sorted_keys]
+    # line = [b_hat_n[n] * math.sqrt(n * area) for n in sorted_keys]
     errors = [line[sorted_keys.index(x[i])] - y[i] for i in range(len(x))]
     MAE = np.mean(np.mean(np.abs(errors)) / line)
 
@@ -58,7 +58,7 @@ def scatterplot(lengths, x, y, b_hat, line, filename):
 def errorsplot(errors, filename):
     plt.figure(figsize=(20, 15))
     plt.hist(errors, label="Prediction errors", alpha=0.6)
-    plt.xlabel("Predictio error (m)")
+    plt.xlabel("Prediction error (m)")
     plt.ylabel("Frequency")
     plt.legend()
     plt.title("Histogram of TSP path length prediction errors")

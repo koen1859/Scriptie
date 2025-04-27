@@ -45,7 +45,7 @@ def run_simulation(DB, neighborhood):
     area = get_area(buildings)
     # paths_subset(graph, nodes, buildings, tours, distances, DB)
     x, y, b_hat, b = find_beta(distances, area)
-    line, errors, MAE = results(distances, x, y, b, area)
+    line, errors, MAE = results(distances, x, y, b_hat, area)
     scatterplot(distances, x, y, b_hat, line, f"scatter_{DB}_{neighborhood}")
     errorsplot(errors, f"errors_{DB}_{neighborhood}")
     return b_hat, MAE
