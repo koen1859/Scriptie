@@ -24,30 +24,30 @@ edges, weights = get_edges(roads, nodes, buildings)
 print(f"{len(edges)} edges extracted.")
 graph = make_graph(nodes, buildings, edges, weights)
 
-import igraph as ig
-import matplotlib.pyplot as plt
-
-layout = [(v["coords"][1], v["coords"][0]) for v in graph.vs]
-
-fig, ax = plt.subplots(figsize=(8, 8))
-
-ig.plot(
-    graph,
-    layout=layout,
-    target=ax,
-    vertex_size=5,
-    edge_width=0.5,
-)
-
-ax.set_xlabel("Longitude")
-ax.set_ylabel("Latitude")
-plt.show()
+# import igraph as ig
+# import matplotlib.pyplot as plt
+#
+# layout = [(v["coords"][1], v["coords"][0]) for v in graph.vs]
+#
+# fig, ax = plt.subplots(figsize=(8, 8))
+#
+# ig.plot(
+#     graph,
+#     layout=layout,
+#     target=ax,
+#     vertex_size=5,
+#     edge_width=0.5,
+# )
+#
+# ax.set_xlabel("Longitude")
+# ax.set_ylabel("Latitude")
+# plt.show()
 
 area = get_area(buildings)
 tours, lengths = read_tours("tsps_groningen_Binnenstad")
 paths_subset(graph, nodes, buildings, tours, lengths, "groningen_Binnenstad")
 x, y, b_hat, b_hat_n = find_beta(lengths, area)
-line, errors, MAE = results(lengths, x, y, b_hat_n, area)
+line, errors, MAE = results(lengths, x, y, b_hat, area)
 print(
     f"""MAE: {MAE}\n
 Beta: {b_hat}
