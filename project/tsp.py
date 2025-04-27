@@ -46,7 +46,8 @@ def generate_tsp(graph, i, run, city, dirname):
 
 # if we would write all tsps sequentially, it would take ages upon ages. We use multiprocessing
 # to speed it up.
-def create_tsps(graph, num_runs, num_locations, num_threads, city, dirname):
+def create_tsps(graph, num_runs, num_locations, city, dirname):
+    num_threads = multiprocessing.cpu_count()
     os.makedirs(dirname, exist_ok=True)
     tasks = [
         (graph, i, run, city, dirname) for i in num_locations for run in range(num_runs)

@@ -7,8 +7,8 @@ for DB, neighborhoods in areas.items():
         print(f"Generating TSPS for {DB} {neighborhood}")
         write_tsps(DB, neighborhood)
 
-final_results = {}
-
+# final_results = {}
+#
 # for DB, neighborhoods in areas.items():
 #     for neighborhood in neighborhoods:
 #         b, MAE = run_simulation(DB, neighborhood)
