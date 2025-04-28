@@ -376,7 +376,7 @@ distance matrix, three files need to written per instance: a parameter file, a p
 \url{json} file.
 
 The parameter file contains two lines, in this case: a path to the problem file and a path to the
-output tour file. This ensures that LKH solvers the correct TSPs, and saves the solutions in the 
+output tour file. This ensures that LKH solves the correct TSPs, and saves the solutions in the 
 correct locations. The problem file contains the information about the problem, for instance
 $n$, and the distance matrix. Using these two inputs LKH can solve the TSPs. However with only these 
 two files, the output tour can not be evaluated, since LKH starts indexing the visited locations
@@ -393,7 +393,7 @@ Again using the \url{folium} module, such a solution path can be visualized on t
 paths is provided in figure \ref{fig:tsp_stadvdzon}. Only some of these paths are visualized,
 in order to check whether it looks like a reasonable solution, but it is not feasible, and it does
 not add value to visualize all TSP paths, since there is a total of 
-$(29+52)\cdot70\cdot100=567,000$ TSP simulations.
+$(29+52)\cdot70\cdot100=567,000$ TSP instances.
 Using the TSP solutions LKH provides and the estimated area of each neighborhood, formula 
 \ref{eq:beardwood} can be estimated.
 \begin{figure}[H]
