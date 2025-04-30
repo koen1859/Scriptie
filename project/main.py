@@ -3,10 +3,10 @@ from areas import areas
 import ujson
 
 
-for DB, neighborhoods in areas.items():
-    for neighborhood in neighborhoods:
-        print(f"Generating TSPS for {DB} {neighborhood}")
-        write_tsps(DB, neighborhood)
+# for DB, neighborhoods in areas.items():
+#     for neighborhood in neighborhoods:
+#         print(f"Generating TSPS for {DB} {neighborhood}")
+#         write_tsps(DB, neighborhood)
 
 final_results = {}
 

@@ -40,7 +40,7 @@ def results(lengths, x, y, b_hat, area):
 # This function makes scatterplot of all tsp path lengths and their n, and the line that
 # relates tsp path length to n,
 def scatterplot(lengths, x, y, b_hat, line, filename):
-    plt.figure(figsize=(20, 15))
+    fig = plt.figure(figsize=(20, 15))
     plt.scatter(np.log(x), np.log(y), label="Simulated values", alpha=0.6)
     plt.plot(
         np.log(sorted(lengths.keys())),
@@ -52,14 +52,16 @@ def scatterplot(lengths, x, y, b_hat, line, filename):
     plt.legend()
     plt.title("Scatterplot of TSP path lengths with estimated line y = b * sqrt(n * A)")
     plt.savefig(f"plots/{filename}")
+    plt.close(fig)
 
 
 # We also make a Histogram of all prediction errors
 def errorsplot(errors, filename):
-    plt.figure(figsize=(20, 15))
+    fig = plt.figure(figsize=(20, 15))
     plt.hist(errors, label="Prediction errors", alpha=0.6)
     plt.xlabel("Prediction error (m)")
     plt.ylabel("Frequency")
     plt.legend()
     plt.title("Histogram of TSP path length prediction errors")
     plt.savefig(f"plots/{filename}")
+    plt.close(fig)
