@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export PGUSER="koenstevens"
-
 for file in data/*.osm.pbf; do
 	# Extract base name
 	base=$(basename "$file" -latest.osm.pbf)
