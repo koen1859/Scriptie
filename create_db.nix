@@ -1,5 +1,5 @@
 {pkgs, ...}:
-pkgs.writeScriptBin "create_db" ''
+pkgs.writeShellScriptBin "create_db" ''
   for file in data/*.osm.pbf; do
   	base=$(basename "$file" -latest.osm.pbf)
   	dbname=$(echo "$base" | sed 's/-/_/g')
