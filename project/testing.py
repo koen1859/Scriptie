@@ -1,4 +1,4 @@
-from db import get_addresses, get_road_data
+from db import get_addresses, get_road_data, get_features
 from area import get_area
 from map import create_map
 from buildings import get_buildings
@@ -12,18 +12,20 @@ from find_beta import find_beta, results, scatterplot, errorsplot
 from map import create_map
 
 # This is just a file i made to test some things before but it will probably return error now
-roads = get_road_data("groningen", "Beijum")
-print(f"{len(roads)} roads imported.")
-building_data = get_addresses("groningen", "Beijum")
-buildings, building_DB = get_buildings(building_data)
-print(f"{len(buildings)} buildings imported.")
-# create_map(roads, f"{"groningen"}_{"Beijum"}.html", buildings)
-nodes = get_nodes(roads)
-print(f"{len(nodes)} nodes extracted.")
-edges, weights = get_edges(roads, nodes, buildings)
-print(f"{len(edges)} edges extracted.")
-graph = make_graph(nodes, buildings, edges, weights)
-create_map(nodes, buildings, graph, f"{"groningen"}_{"Beijum"}.html")
+# roads = get_road_data("groningen", "Beijum")
+# print(f"{len(roads)} roads imported.")
+# building_data = get_addresses("groningen", "Beijum")
+# buildings, building_DB = get_buildings(building_data)
+# print(f"{len(buildings)} buildings imported.")
+# # create_map(roads, f"{"groningen"}_{"Beijum"}.html", buildings)
+# nodes = get_nodes(roads)
+# print(f"{len(nodes)} nodes extracted.")
+# edges, weights = get_edges(roads, nodes, buildings)
+# print(f"{len(edges)} edges extracted.")
+# graph = make_graph(nodes, buildings, edges, weights)
+# create_map(nodes, buildings, graph, f"{"groningen"}_{"Beijum"}.html")
+features = get_features("groningen", "Beijum")
+print({feature_type: count for feature_type, count in features})
 
 # import igraph as ig
 # import matplotlib.pyplot as plt

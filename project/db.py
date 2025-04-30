@@ -132,3 +132,75 @@ def get_area(DB, neighborhood):
     cursor.close()
     connection.close()
     return area
+
+
+def get_features(DB, neighborhood):
+    connection = psycopg2.connect(dbname=DB)
+    cursor = connection.cursor()
+    cursor.execute(
+        f"""
+        WITH neighborhood AS (
+            SELECT ST_Transform(way, 4326) AS geom
+            FROM planet_osm_polygon
+            WHERE place = 'quarter'
+            AND name = '{neighborhood}'
+        ),
+        natural_features AS (
+            SELECT
+                w.id,
+                w.tags->>'natural' AS type,
+                ST_MakeLine(ARRAY(
+                    SELECT ST_SetSRID(ST_MakePoint(n.lon / 1e7, n.lat / 1e7), 4326)
+                    FROM unnest(w.nodes) WITH ORDINALITY AS u(node_id, ordinality)
+                    JOIN planet_osm_nodes n ON n.id = u.node_id
+                    ORDER BY u.ordinality
+                )) AS geom
+            FROM planet_osm_ways w
+            WHERE w.tags->>'natural' IN (
+                'scrub', 'wetland', 'sand', 'beach', 'strait', 'wood', 'shrubbery', 'ridge',
+                'grassland', 'fell', 'valley', 'greenery', 'mud', 'scree', 'water', 'tree_row',
+                'coastline', 'heath'
+            )
+        ),
+        leisure AS (
+            SELECT
+                w.id,
+                w.tags->>'leisure' AS type,
+                ST_MakeLine(ARRAY(
+                    SELECT ST_SetSRID(ST_MakePoint(n.lon / 1e7, n.lat / 1e7), 4326)
+                    FROM unnest(w.nodes) WITH ORDINALITY AS u(node_id, ordinality)
+                    JOIN planet_osm_nodes n ON n.id = u.node_id
+                    ORDER BY u.ordinality
+                )) AS geom
+            FROM planet_osm_ways w
+            WHERE w.tags->>'leisure' IN (
+                'fishing', 'fitness_centre', 'outdoor_seating', 'golf_course', 'sports_centre',
+                'garden', 'swimming_pool', 'sauna', 'track', 'miniature_train', 'nature_reserve',
+                'bandstand', 'slipway', 'resort', 'stadium', 'marina', 'practice_pitch',
+                'water_park', 'horse_riding', 'firepit', 'park;playground', 'schoolyard',
+                'bleachers', 'recreation_ground', 'bird_hide', 'ice_rink', 'amusement_arcade',
+                'pitch', 'miniature_golf', 'swimming_area', 'playground', 'park',
+                'fitness_station', 'sports_hall', 'dog_park'
+            )
+        ),
+        features AS (
+            SELECT * FROM natural_features
+            UNION ALL
+            SELECT * FROM leisure
+        ),
+        filtered_features AS (
+            SELECT f.*
+            FROM features f, neighborhood nb
+            WHERE
+                ST_Intersects(f.geom, nb.geom)
+        )
+        SELECT type, COUNT(*) AS count
+        FROM filtered_features
+        GROUP BY type
+        ORDER BY count DESC;
+        """
+    )
+    features = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return features
