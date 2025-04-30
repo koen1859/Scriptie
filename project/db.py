@@ -1,5 +1,4 @@
 import psycopg2
-from config import DB_HOST, DB_PORT, DB_USER
 
 
 # This function imports the roads from the database. It works as follows:
@@ -9,7 +8,7 @@ from config import DB_HOST, DB_PORT, DB_USER
 # also the parts that are not in the neighborhood. This is done because otherwise there are
 # some edge cases where connections are missed that should have been there.
 def get_road_data(DB, neighborhood):
-    connection = psycopg2.connect(dbname=DB, user=DB_USER, host=DB_HOST, port=DB_PORT)
+    connection = psycopg2.connect(dbname=DB)
     cursor = connection.cursor()
     cursor.execute(
         f"""
@@ -75,7 +74,7 @@ def get_road_data(DB, neighborhood):
 # so we can just say ST_Within instead of having to make a new object to also fetch the
 # buildings that intersect the boundary (these do not exist).
 def get_addresses(DB, neighborhood):
-    connection = psycopg2.connect(dbname=DB, user=DB_USER, host=DB_HOST, port=DB_PORT)
+    connection = psycopg2.connect(dbname=DB)
     cursor = connection.cursor()
     cursor.execute(
         f"""
@@ -115,7 +114,7 @@ def get_addresses(DB, neighborhood):
 # parks or lakes, or the buildings are only in a small part of the quarter. We need the area
 # of the convex hull around the buildings, as calculated in area.py
 def get_area(DB, neighborhood):
-    connection = psycopg2.connect(dbname=DB, user=DB_USER, host=DB_HOST, port=DB_PORT)
+    connection = psycopg2.connect(dbname=DB)
     cursor = connection.cursor()
     cursor.execute(
         f"""

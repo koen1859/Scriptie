@@ -1,5 +1,6 @@
 from run_simulation import run_simulation, write_tsps
 from areas import areas
+import ujson
 
 
 for DB, neighborhoods in areas.items():
@@ -15,6 +16,11 @@ for DB, neighborhoods in areas.items():
         final_results[f"{DB}-{neighborhood}"] = [b, MAE]
         print(f"beta for {DB} {neighborhood} is: {b}")
         print(f"MAE for {DB} {neighborhood} is: {MAE}")
+
+
+with open("final_results.json", "w") as f:
+    ujson.dump(final_results, f)
+
 
 with open("beta_values.tex", "w") as f:
     f.write("\\begin{longtable}{llcc}\n")
