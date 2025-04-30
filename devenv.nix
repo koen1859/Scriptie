@@ -21,6 +21,7 @@
     postgresql17Packages.postgis
     osm2pgsql
     (pkgs.callPackage ./lkh.nix {}) # The Lin-Kernighan heuristic (we fetch this from lkh.nix, the other nix file in the repo)
+    (import ./initdb.nix {inherit pkgs;})
   ];
 
   services.postgres = {
