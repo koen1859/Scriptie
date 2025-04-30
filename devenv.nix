@@ -1,10 +1,4 @@
-{
-  pkgs,
-  lib,
-  config,
-  inputs,
-  ...
-}: {
+{pkgs, ...}: {
   packages = with pkgs; [
     (python3.withPackages (ps:
       with ps; [

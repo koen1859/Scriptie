@@ -1,0 +1,40 @@
+NAME : tsp_problem.7167.tour
+COMMENT : Length = 7167
+COMMENT : Found by LKH [Keld Helsgaun] Wed Apr 30 18:52:49 2025
+TYPE : TOUR
+DIMENSION : 32
+TOUR_SECTION
+1
+4
+30
+6
+25
+28
+11
+21
+29
+26
+19
+7
+9
+24
+31
+32
+23
+3
+16
+27
+12
+14
+5
+22
+13
+18
+8
+2
+17
+20
+10
+15
+-1
+EOF
