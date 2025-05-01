@@ -203,4 +203,4 @@ def get_features(DB, neighborhood):
     features = cursor.fetchall()
     cursor.close()
     connection.close()
-    return features
+    return {feature_type: count for feature_type, count in features}

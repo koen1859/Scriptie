@@ -24,8 +24,7 @@ from map import create_map
 # print(f"{len(edges)} edges extracted.")
 # graph = make_graph(nodes, buildings, edges, weights)
 # create_map(nodes, buildings, graph, f"{"groningen"}_{"Beijum"}.html")
-features = get_features("groningen", "Beijum")
-print({feature_type: count for feature_type, count in features})
+print(get_features("groningen", "Rivierenbuurt"))
 
 # import igraph as ig
 # import matplotlib.pyplot as plt
