@@ -24,7 +24,7 @@ from map import create_map
 # print(f"{len(edges)} edges extracted.")
 # graph = make_graph(nodes, buildings, edges, weights)
 # create_map(nodes, buildings, graph, f"{"groningen"}_{"Beijum"}.html")
-print(get_features("groningen", "Rivierenbuurt"))
+print(get_features("groningen", "Binnenstad"))
 
 # import igraph as ig
 # import matplotlib.pyplot as plt
